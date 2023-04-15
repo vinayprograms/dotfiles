@@ -4,6 +4,6 @@ My bash customizations. Includes a set of additional '.rc' files required by som
 
 ## Using this repo
 
-> NOTE: Please remove ~/.bashrc and ~/.bash_profile before cloning.
+> NOTE: Please back up your `~/.bashrc` and `~/.bash_profile` before cloning.
 
-Download a zipped copy of this repo. Extract its contents into your home directory.
+Clone this repo into `.local` directory (create if necessary) your home directory. Move `.bashrc` and `.bash_profile` into your home directory. If required, source it or restart the shell session.
