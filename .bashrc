@@ -1,4 +1,4 @@
-if [[ -f "$HOME/dotfiles/.bashrc" ]] ; then
-	source "$HOME/dotfiles/.bashrc"
+if [[ -f "$HOME/.local/dotfiles/.bashrc" ]] ; then
+	source "$HOME/.local/dotfiles/.bashrc"
 fi
 
