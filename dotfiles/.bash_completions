@@ -1,0 +1,2 @@
+complete -C zet zet
+complete -C snip snip

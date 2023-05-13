@@ -12,11 +12,6 @@ shopt -s checkwinsize
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# Import alias definitions.
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 # enable programmable completion features
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -35,10 +30,12 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-if [[ -f "$HOME/dotfiles/.bash_aliases" ]] ; then
-	source "$HOME/dotfiles/.bash_aliases"
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+if [[ -f "$SCRIPT_DIR/.bash_aliases" ]] ; then
+	source "$SCRIPT_DIR/.bash_aliases"
 fi
-if [[ -f "$HOME/dotfiles/.bash_paths" ]] ; then
-	source "$HOME/dotfiles/.bash_paths"
+if [[ -f "$SCRIPT_DIR/.bash_paths" ]] ; then
+	source "$SCRIPT_DIR/.bash_paths"
 fi
 
