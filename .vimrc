@@ -73,6 +73,7 @@ au FileType * hi IncSearch ctermbg=236 cterm=NONE ctermfg=darkred
 au FileType * hi MatchParen ctermbg=236 ctermfg=darkred
 au FileType markdown,pandoc hi Title ctermfg=yellow ctermbg=NONE cterm=bold
 au FileType markdown,pandoc hi Operator ctermfg=yellow ctermbg=NONE cterm=bold
+au FileType markdown,pandoc hi markdownCode ctermfg=darkblue ctermbg=NONE
 au FileType markdown,pandoc set tw=0
 au FileType yaml hi yamlBlockMappingKey ctermfg=NONE
 au FileType yaml set sw=2
