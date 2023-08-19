@@ -11,7 +11,7 @@ if [[ -f "$SCRIPT_DIR/.bash_completions" ]] ; then
 	source "$SCRIPT_DIR/.bash_completions"
 fi
 
-export TERM=xterm
+export TERM=xterm-256color-italic
 export force_color_prompt=yes
 export EDITOR=vim
 
