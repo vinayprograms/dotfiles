@@ -1,4 +1,4 @@
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SCRIPT_DIR=$( cd -- "$( dirname -- "$(readlink ~/.bash_profile)" )" &> /dev/null && pwd )
 
 if [[ -f "$SCRIPT_DIR/parts/.bash_aliases" ]] ; then
 	source "$SCRIPT_DIR/parts/.bash_aliases"
