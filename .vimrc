@@ -61,7 +61,7 @@ hi MatchParen ctermbg=236 ctermfg=darkred
 " color overrides
 au FileType * hi Normal ctermbg=NONE
 au FileType * hi Special ctermfg=cyan
-au FileType * hi goComment ctermfg=black ctermbg=NONE
+au FileType * hi goComment ctermfg=darkblue ctermbg=NONE
 au FileType * hi ErrorMsg ctermbg=234 ctermfg=darkred cterm=NONE
 au FileType * hi Error ctermbg=234 ctermfg=darkred cterm=NONE
 au FileType * hi SpellBad ctermbg=234 ctermfg=darkred cterm=NONE
