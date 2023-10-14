@@ -1,4 +1,4 @@
 #!/bin/bash
 
-export PATH="$PATH:/usr/local/go/bin/go:$HOME/.local/bin:$HOME/.local/bin/toolsh:/opt/homebrew/bin"
-
+export PATH="$PATH:/usr/local/go/bin/go:$HOME/.local/bin:$HOME/.local/bin/toolsh:/opt/homebrew/bin:$HOME/go/bin"
+export CDPATH="$PATH"

@@ -26,3 +26,4 @@ alias tw="tasksync waiting"
 alias te="tasksync edit"
 alias in="inbox" # `inbox` is a custom script that uses taskwarrior
 alias n="tasksync -rnr +UNBLOCKED"
+alias ??="chatgpt"
