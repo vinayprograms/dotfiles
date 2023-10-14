@@ -11,7 +11,7 @@ if [[ -f "$SCRIPT_DIR/parts/.bash_completions" ]] ; then
 	source "$SCRIPT_DIR/parts/.bash_completions"
 fi
 
-tic -x xterm-256color-italic
+tic -x xterm-256color-italic.terminfo
 
 export TERM=xterm-256color-italic
 export force_color_prompt=yes
