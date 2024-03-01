@@ -26,6 +26,14 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# FZF
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# Autocompletion
+[[ $- == *i* ]] && source "/opt/homebrew/Cellar/fzf/0.46.1/shell/completion.bash" 2> /dev/null
+# key bindings
+[[ $- == *i* ]] && source "/opt/homebrew/Cellar/fzf/0.46.1/shell/key-bindings.bash" 2> /dev/null
+
+
 # enable color support of ls and also add handy aliases
 #if [ -x /usr/bin/dircolors ]; then
 #    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
