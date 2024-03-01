@@ -28,5 +28,5 @@ alias in="inbox" # `inbox` is a custom script that uses taskwarrior
 alias n="tasksync -rnr +UNBLOCKED"
 alias ??="chatgpt"
 alias tls="tmux ls"
-alias tla="tmux attach -t"
-alias tnew="tmux new -s"
+alias tma="tmux attach -t"
+alias tmn="tmux new -s"
