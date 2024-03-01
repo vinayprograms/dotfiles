@@ -1,6 +1,7 @@
 #!/bin/bash
 
 alias chmox="chmod +x"
+alias ls="ls --color=auto"
 alias tmux="tmux -u" # Always load with unicode support
 # Always use emacs daemon + client
 alias e="$HOME/.local/bin/toolsh/emacs-editor" 
