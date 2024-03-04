@@ -16,6 +16,8 @@ tic -x "$SCRIPT_DIR"/xterm-256color-italic.terminfo
 export TERM=xterm-256color-italic
 export force_color_prompt=yes
 export EDITOR=vim
+set -o vi
+set show-mode-in-prompt on
 
 # enable programmable completion features
 if ! shopt -oq posix; then
@@ -45,4 +47,3 @@ fi
 
 
 export PS1='[📂 \[\033[1;34m\]\W\[\033[00m\]]▶ '
-

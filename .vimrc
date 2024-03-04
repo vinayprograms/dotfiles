@@ -145,6 +145,7 @@ let g:vim_markdown_strikethrough=1
 highlight mkdStrike ctermfg=lightgray guifg=lightgray cterm=strikethrough gui=strikethrough
 au FileType markdown,pandoc hi Title ctermfg=yellow ctermbg=NONE cterm=bold
 au FileType markdown,pandoc hi Operator ctermfg=yellow ctermbg=NONE cterm=bold
+au FileType markdown,pandoc hi htmlBold ctermfg=254 cterm=bold
 au FileType markdown,pandoc hi markdownCode ctermfg=darkblue ctermbg=NONE
 au FileType markdown,pandoc set tw=0
 au FileType markdown setlocal shiftwidth=2 softtabstop=2
