@@ -3,8 +3,10 @@
 alias chmox="chmod +x"
 alias ls="ls --color=auto"
 alias tmux="tmux -u" # Always load with unicode support
-# Always use emacs daemon + client
-alias e="$HOME/.local/bin/toolsh/emacs-editor" 
+
+alias e="$HOME/.local/bin/toolsh/emacs-editor" # Always use emacs daemon + client
+alias v="vim"
+
 # KVM
 alias vm="virsh -c qemu+ssh://devru@homelab/system"
 alias kube='kubectl'

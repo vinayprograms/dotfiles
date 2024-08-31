@@ -20,4 +20,3 @@ fi
 if [[ -f "$SCRIPT_DIR/parts/.bash_paths" ]] ; then
 	source "$SCRIPT_DIR/parts/.bash_paths"
 fi
-

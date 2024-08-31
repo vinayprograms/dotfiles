@@ -18,8 +18,8 @@ set rtp+=/opt/homebrew/opt/fzf
 " mark trailing spaces as errors
 match IncSearch '\s\+$'
 " enough for line numbers + gutter within 80 standard
-set textwidth=72
-set colorcolumn=73
+"set textwidth=72
+"set colorcolumn=73
 
 " turn on default spell checking
 "set spell
@@ -81,6 +81,10 @@ set statusline+=%f\ \ \ \            			" relative file path
 set statusline+=\ C:%{wordcount().chars}%{exists('g:show_warning')?'⚠️\ ':'\ \ '} 
 set statusline+=\ W:%{wordcount().words}	" word count
 
+" Better page down and page up
+noremap <C-n> <C-d>
+noremap <C-p> <C-b>
+
 " Prevent truncated yanks, deletes, etc.
 set viminfo='20,<1000,s1000
 
@@ -140,8 +144,8 @@ au FileType bash set sw=2
 au FileType c set sw=8
 
 " markdown specific settings
-let g:vim_markdown_math = 1
-let g:vim_markdown_strikethrough=1
+let g:vim_markdown_math = v:true
+let g:vim_markdown_strikethrough=v:true
 highlight mkdStrike ctermfg=lightgray guifg=lightgray cterm=strikethrough gui=strikethrough
 au FileType markdown,pandoc hi Title ctermfg=yellow ctermbg=NONE cterm=bold
 au FileType markdown,pandoc hi Operator ctermfg=yellow ctermbg=NONE cterm=bold
@@ -160,4 +164,44 @@ au FileType markdown hi mkdCheckedItem cterm=strikethrough gui=strikethrough cte
 let g:ale_sign_error = '☠'
 let g:ale_sign_warning = '🙄'
 let g:ale_linters = {'go': ['gometalinter', 'gofmt','gobuild']}
+
+" Disable Copilot on startup
+let g:copilot_enabled = v:false
+
+" ---------- language servers ----------
+
+" General LSP settings
+noremap <silent> gd :LspDefinition<CR>
+noremap <silent> gr :LspReferences<CR>
+noremap <silent> K :LspHover<CR>
+
+" Bash LSP
+if executable('bash-language-server')
+  au User lsp_setup call lsp#register_server({
+        \ 'name': 'bash-language-server',
+        \ 'cmd': {server_info->['bash-language-server', 'start']},
+        \ 'whitelist': ['sh', 'bash'],
+        \ })
+endif
+
+" YAML LSP
+if executable('yaml-language-server')
+	au User lsp_setup call lsp#register-server){
+				\ 'name': 'yaml-language-server',
+				\ 'cmd': {server_info->['yaml-language-server', '--stdio']},
+				\ 'whitelist': ['yaml','yml'],
+				\ })
+endif
+
+" Python LSP
+if executable('pylsp')
+	au User lsp_setup call lsp#register_server({
+				\ 'name': 'pylsp',
+				\ 'cmd': {server_info->['pylsp']},
+				\ 'whitelist': ['python'],
+				\ })
+endif
+
+" go LSP settings
+let g:go_auto_type_info = 0
 
