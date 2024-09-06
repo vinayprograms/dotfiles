@@ -18,8 +18,8 @@ set rtp+=/opt/homebrew/opt/fzf
 " mark trailing spaces as errors
 match IncSearch '\s\+$'
 " enough for line numbers + gutter within 80 standard
-set textwidth=72
-set colorcolumn=73
+set textwidth=79
+set colorcolumn=80
 
 " turn on default spell checking
 "set spell
@@ -34,7 +34,7 @@ function! BlinkZettelWarning(timer_id)
 	let totalChars = strlen(join(getline(1, '$'), "\n"))
 	" Toggle the warning symbol based on character count and current
 	" visibility
-	if totalChars >= 1500 && !exists('g:show_warning')
+	if totalChars >= 5000 && !exists('g:show_warning')
 			let g:show_warning = 1
 	elseif exists('g:show_warning')
 		unlet g:show_warning
@@ -80,6 +80,10 @@ set statusline+=%f\ \ \ \            			" relative file path
 " character count + zettel limit warning
 set statusline+=\ C:%{wordcount().chars}%{exists('g:show_warning')?'⚠️\ ':'\ \ '} 
 set statusline+=\ W:%{wordcount().words}	" word count
+
+" Better page down and page up
+noremap <C-n> <C-d>
+noremap <C-p> <C-b>
 
 " Prevent truncated yanks, deletes, etc.
 set viminfo='20,<1000,s1000
@@ -160,4 +164,39 @@ au FileType markdown hi mkdCheckedItem cterm=strikethrough gui=strikethrough cte
 let g:ale_sign_error = '☠'
 let g:ale_sign_warning = '🙄'
 let g:ale_linters = {'go': ['gometalinter', 'gofmt','gobuild']}
+
+" Github copilot
+let g:github_copilot_enabled = v:false
+
+" LSP support
+nnoremap <silent> gd :LspDefinition<CR>
+nnoremap <silent> gr :LspReferences<CR>
+nnoremap <silent> K :LspHover<CR>
+
+" Bash LSP
+if executable('bash-language-server')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'bash-language-server',
+        \ 'cmd': {server_info->['bash-language-server', 'start']},
+        \ 'whitelist': ['sh', 'bash'],
+        \ })
+endif
+
+" YAML LSP
+if executable('yaml-language-server')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'yaml-language-server',
+        \ 'cmd': {server_info->['yaml-language-server', '--stdio']},
+        \ 'whitelist': ['yaml', 'yml'],
+        \ })
+endif
+
+" Python LSP
+if executable('pylsp')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pylsp',
+        \ 'cmd': {server_info->['pylsp']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
 

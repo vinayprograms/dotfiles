@@ -22,14 +22,17 @@ alias pull="git pull"
 
 # taskwarrior shortcuts
 alias t="tasksync"
+alias tui="taskwarrior-tui"
 alias ta="taskpush add"
 alias tc="taskpull completed"
 alias tp="taskpull projects"
 alias tl="taskpull list"
 alias tw="tasksync waiting"
 alias te="tasksync edit"
+alias tm="taskmodify"
 alias in="inbox" # `inbox` is a custom script that uses taskwarrior
 alias n="tasksync -rnr +UNBLOCKED"
+alias prjl="prj list"
 alias '??'="chatgpt"
 alias tmls="tmux ls"
 alias tma="tmux attach -t"
