@@ -2,11 +2,11 @@ set nu
 set autowrite
 set showmode
 set expandtab
-set tabstop=2 softtabstop=2 shiftwidth=2 " smarttab
+set tabstop=2 softtabstop=2 shiftwidth=2 smarttab
 set number ruler
 set autoindent smartindent
 set conceallevel=2
-set breakindent
+set breakindent linebreak
 set breakindentopt=,min:40
 syntax on
 
@@ -15,6 +15,18 @@ filetype plugin indent on
 " fzf support
 set rtp+=/opt/homebrew/opt/fzf
 
+" Autosave after 5 seconds of inactivity
+set updatetime=5000
+function! AutoSaveAllBuffers()
+	wa
+	echo "Buffers autosaved"
+	sleep 1
+endfunction
+augroup autosave_on_idle
+	autocmd!
+	autocmd CursorHold,CursorHoldI * call AutoSaveAllBuffers()
+augroup END
+
 " mark trailing spaces as errors
 match IncSearch '\s\+$'
 " enough for line numbers + gutter within 80 standard
@@ -22,7 +34,7 @@ match IncSearch '\s\+$'
 "set colorcolumn=73
 
 " turn on default spell checking
-"set spell
+set spell
 
 " allow sensing the file type
 filetype plugin on
