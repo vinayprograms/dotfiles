@@ -104,7 +104,7 @@ au BufRead,BufNewFile *.adm set syntax=cucumber
 set incsearch                          " search as you type
 set hlsearch                           " highlight search terms
 " pressing leader twice clears search
-map <silent> <esc><esc> :let @/=""<CR> 
+map <silent> <esc><esc> :let @/=""<CR>
 set ignorecase                         " case insensitive
 set smartcase                          " case sensitive for uppercase
 
@@ -195,7 +195,7 @@ endif
 
 " YAML LSP
 if executable('yaml-language-server')
-	au User lsp_setup call lsp#register-server){
+	au User lsp_setup call lsp#register_server({
 				\ 'name': 'yaml-language-server',
 				\ 'cmd': {server_info->['yaml-language-server', '--stdio']},
 				\ 'whitelist': ['yaml','yml'],
