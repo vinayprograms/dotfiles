@@ -8,7 +8,7 @@ alias path='echo $PATH | tr -s ":" "\n"'
 
 # Always use emacs daemon + client
 alias e='$HOME/.local/bin/toolsh/emacs-editor' 
-lias v="vim"
+alias v="vim"
 
 # KVM
 alias vm="virsh -c qemu+ssh://devru@homelab/system"
