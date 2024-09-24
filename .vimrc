@@ -6,14 +6,43 @@ set tabstop=2 softtabstop=2 shiftwidth=2 " smarttab
 set number ruler
 set autoindent smartindent
 set conceallevel=2
-set breakindent
-set breakindentopt=,min:40
+set breakindent linebreak breakindentopt=,min:40
+set fo-=t   " don't auto-wrap text using text width
+set fo+=c   " autowrap comments using textwidth with leader
+set fo-=r   " don't auto-insert comment leader on enter in insert
+set fo-=o   " don't auto-insert comment leader on o/O in normal
+set fo+=q   " allow formatting of comments with gq
+set fo-=w   " don't use trailing whitespace for paragraphs
+set fo-=a   " disable auto-formatting of paragraph changes
+set fo-=n   " don't recognized numbered lists
+set fo+=j   " delete comment prefix when joining
+set fo-=2   " don't use the indent of second paragraph line
+set fo-=v   " don't use broken 'vi-compatible auto-wrapping'
+set fo-=b   " don't use broken 'vi-compatible auto-wrapping'
+set fo+=l   " long lines not broken in insert mode
+set fo+=m   " multi-byte character line break support
+set fo+=M   " don't add space before or after multi-byte char
+set fo-=B   " don't add space between two multi-byte chars
+set fo+=1   " don't break a line after a one-letter word
+
 syntax on
 
 filetype plugin indent on
 
 " fzf support
 set rtp+=/opt/homebrew/opt/fzf
+
+" Autosave after 5 seconds of inactivity
+set updatetime=5000
+function! AutoSaveAllBuffers()
+	wa
+	echo "Buffers autosaved"
+	sleep 1
+endfunction
+augroup autosave_on_idle
+	autocmd!
+	autocmd CursorHold,CursorHoldI * call AutoSaveAllBuffers()
+augroup END
 
 " mark trailing spaces as errors
 match IncSearch '\s\+$'
@@ -186,7 +215,7 @@ endif
 
 " YAML LSP
 if executable('yaml-language-server')
-	au User lsp_setup call lsp#register-server){
+	au User lsp_setup call lsp#register_server({
 				\ 'name': 'yaml-language-server',
 				\ 'cmd': {server_info->['yaml-language-server', '--stdio']},
 				\ 'whitelist': ['yaml','yml'],
