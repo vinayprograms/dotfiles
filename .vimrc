@@ -2,10 +2,11 @@ set nu
 set autowrite
 set showmode
 set expandtab
-set tabstop=2 softtabstop=2 shiftwidth=2 " smarttab
+set tabstop=2 softtabstop=2 shiftwidth=2 smarttab
 set number ruler
 set autoindent smartindent
 set conceallevel=2
+
 set breakindent linebreak breakindentopt=,min:40
 set fo-=t   " don't auto-wrap text using text width
 set fo+=c   " autowrap comments using textwidth with leader
@@ -46,12 +47,9 @@ augroup END
 
 " mark trailing spaces as errors
 match IncSearch '\s\+$'
-" enough for line numbers + gutter within 80 standard
-"set textwidth=72
-"set colorcolumn=73
 
 " turn on default spell checking
-"set spell
+set spell
 
 " allow sensing the file type
 filetype plugin on
@@ -63,7 +61,7 @@ function! BlinkZettelWarning(timer_id)
 	let totalChars = strlen(join(getline(1, '$'), "\n"))
 	" Toggle the warning symbol based on character count and current
 	" visibility
-	if totalChars >= 1500 && !exists('g:show_warning')
+	if totalChars >= 5000 && !exists('g:show_warning')
 			let g:show_warning = 1
 	elseif exists('g:show_warning')
 		unlet g:show_warning
@@ -124,7 +122,7 @@ au BufRead,BufNewFile *.adm set syntax=cucumber
 set incsearch                          " search as you type
 set hlsearch                           " highlight search terms
 " pressing leader twice clears search
-map <silent> <esc><esc> :let @/=""<CR> 
+map <silent> <esc><esc> :let @/=""<CR>
 set ignorecase                         " case insensitive
 set smartcase                          " case sensitive for uppercase
 

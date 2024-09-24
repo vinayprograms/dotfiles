@@ -2,10 +2,13 @@
 
 alias chmox="chmod +x"
 alias ls="ls --color=auto"
+alias ll="ls -lah"
 alias tmux="tmux -u" # Always load with unicode support
+alias path='echo $PATH | tr -s ":" "\n"'
 
-alias e="$HOME/.local/bin/toolsh/emacs-editor" # Always use emacs daemon + client
-alias v="vim"
+# Always use emacs daemon + client
+alias e='$HOME/.local/bin/toolsh/emacs-editor' 
+lias v="vim"
 
 # KVM
 alias vm="virsh -c qemu+ssh://devru@homelab/system"
@@ -21,6 +24,7 @@ alias pull="git pull"
 
 # taskwarrior shortcuts
 alias t="tasksync"
+alias tui="taskwarrior-tui"
 alias ta="taskpush add"
 alias tc="taskpull completed"
 alias tp="taskpull projects"
