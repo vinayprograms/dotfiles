@@ -6,6 +6,7 @@ set tabstop=2 softtabstop=2 shiftwidth=2 smarttab
 set number ruler
 set autoindent smartindent
 set conceallevel=2
+set showcmd " show partially entered commands
 
 set breakindent linebreak breakindentopt=,min:40
 set fo-=t   " don't auto-wrap text using text width
@@ -36,14 +37,30 @@ set rtp+=/opt/homebrew/opt/fzf
 " Autosave after 5 seconds of inactivity
 set updatetime=5000
 function! AutoSaveAllBuffers()
-	wa
-	echo "Buffers autosaved"
-	sleep 1
+  let l:current_buffer = bufnr('%')
+  let l:last_buffer = bufnr('$')
+  let l:n = 1
+  let l:any_saved = 0
+
+  while l:n <= l:last_buffer
+    if buflisted(l:n) && getbufvar(l:n, '&modified') && !empty(bufname(l:n))
+      execute 'silent! update ' . fnameescape(bufname(l:n))
+      let l:any_saved = 1
+    endif
+    let l:n = l:n + 1
+  endwhile
+
+  if l:any_saved
+    echo "Buffers autosaved"
+    sleep 1
+  endif
 endfunction
+
 augroup autosave_on_idle
-	autocmd!
-	autocmd CursorHold,CursorHoldI * call AutoSaveAllBuffers()
+  autocmd!
+  autocmd CursorHold,CursorHoldI * call AutoSaveAllBuffers()
 augroup END
+
 
 " mark trailing spaces as errors
 match IncSearch '\s\+$'
