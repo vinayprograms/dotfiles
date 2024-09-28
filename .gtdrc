@@ -1,4 +1,2 @@
-#!/bin/bash
-
 ZETDIR="$HOME/Documents/zet"
 PRJDIR="$HOME/Documents/projects"

@@ -12,7 +12,7 @@ shopt -s checkwinsize
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "$(readlink ~/.bashrc)" )" &> /dev/null && pwd )
+SCRIPT_DIR=$( cd -- "$( dirname -- "$(readlink -f ${BASH_SOURCE[0]})" )" &> /dev/null && pwd )
 
 if [[ -f "$SCRIPT_DIR/parts/.bash_aliases" ]] ; then
 	source "$SCRIPT_DIR/parts/.bash_aliases"
