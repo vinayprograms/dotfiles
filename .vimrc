@@ -31,6 +31,9 @@ syntax on
 
 filetype plugin indent on
 
+" Use '/' instead of ':'. This requires only one key instead of two
+nnoremap / :
+
 " fzf support
 set rtp+=/opt/homebrew/opt/fzf
 
