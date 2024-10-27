@@ -217,7 +217,7 @@ let g:copilot_enabled = v:false
 
 " ---------- Better mode visuals ----------
 " Define highlight groups for different modes
-highlight StatusLineNormal ctermfg=white ctermbg=darkgray guifg=#ffffff guibg=#005f87
+highlight StatusLineNormal ctermfg=darkgray ctermbg=black guifg=#ffffff guibg=#005f87
 highlight StatusLineInsert ctermfg=black ctermbg=red guifg=#000000 guibg=#5f8700
 highlight StatusLineVisual ctermfg=black ctermbg=cyan guifg=#000000 guibg=#d7af5f
 highlight StatusLineReplace ctermfg=black ctermbg=yellow guifg=#000000 guibg=#af0000
