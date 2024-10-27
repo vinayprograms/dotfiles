@@ -31,8 +31,8 @@ syntax on
 
 filetype plugin indent on
 
-" Use '/' instead of ':'. This requires only one key instead of two
-nnoremap / :
+" Use ';' instead of ':'. This requires only one keystroke instead of two
+nnoremap ; :
 
 " fzf support
 set rtp+=/opt/homebrew/opt/fzf
@@ -214,6 +214,39 @@ let g:ale_linters = {'go': ['gometalinter', 'gofmt','gobuild']}
 
 " Disable Copilot on startup
 let g:copilot_enabled = v:false
+
+" ---------- Better mode visuals ----------
+" Define highlight groups for different modes
+highlight StatusLineNormal ctermfg=white ctermbg=darkgray guifg=#ffffff guibg=#005f87
+highlight StatusLineInsert ctermfg=black ctermbg=red guifg=#000000 guibg=#5f8700
+highlight StatusLineVisual ctermfg=black ctermbg=cyan guifg=#000000 guibg=#d7af5f
+highlight StatusLineReplace ctermfg=black ctermbg=yellow guifg=#000000 guibg=#af0000
+
+" Function to update the status line based on mode
+function! UpdateStatusLineColor()
+    let l:mode = mode()
+    if l:mode == 'n'
+        hi! link StatusLine StatusLineNormal
+    elseif l:mode == 'i'
+        hi! link StatusLine StatusLineInsert
+    elseif l:mode == 'v' || l:mode == 'V' || l:mode == '^V'
+        hi! link StatusLine StatusLineVisual
+    elseif l:mode == 'R'
+        hi! link StatusLine StatusLineReplace
+    endif
+endfunction
+
+" Trigger the function on various mode change events
+autocmd InsertEnter,InsertLeave * call UpdateStatusLineColor()
+autocmd CmdlineEnter,CmdlineLeave * call UpdateStatusLineColor()
+autocmd BufEnter,BufLeave * call UpdateStatusLineColor()
+autocmd WinEnter,WinLeave * call UpdateStatusLineColor()
+autocmd CursorHold * call UpdateStatusLineColor()
+autocmd CursorMoved * call UpdateStatusLineColor()
+autocmd ModeChanged * call UpdateStatusLineColor()
+
+" Update the status line on startup
+autocmd VimEnter * call UpdateStatusLineColor()
 
 " ---------- language servers ----------
 
