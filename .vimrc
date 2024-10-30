@@ -1,26 +1,27 @@
+" ---------- Customize editing experience ----------
 set nu
 set autowrite
 set showmode
 set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2 smarttab
-set number ruler
+set relativenumber
 set autoindent smartindent
 set conceallevel=2
 set showcmd " show partially entered commands
 
 set breakindent linebreak breakindentopt=,min:40
 set fo-=t   " don't auto-wrap text using text width
-set fo+=c   " autowrap comments using textwidth with leader
+"set fo+=c   " autowrap comments using textwidth with leader
 set fo-=r   " don't auto-insert comment leader on enter in insert
 set fo-=o   " don't auto-insert comment leader on o/O in normal
 set fo+=q   " allow formatting of comments with gq
 set fo-=w   " don't use trailing whitespace for paragraphs
 set fo-=a   " disable auto-formatting of paragraph changes
-set fo-=n   " don't recognized numbered lists
+"set fo-=n   " don't recognized numbered lists
 set fo+=j   " delete comment prefix when joining
 set fo-=2   " don't use the indent of second paragraph line
-set fo-=v   " don't use broken 'vi-compatible auto-wrapping'
-set fo-=b   " don't use broken 'vi-compatible auto-wrapping'
+"set fo-=v   " don't use broken 'vi-compatible auto-wrapping'
+"set fo-=b   " don't use broken 'vi-compatible auto-wrapping'
 set fo+=l   " long lines not broken in insert mode
 set fo+=m   " multi-byte character line break support
 set fo+=M   " don't add space before or after multi-byte char
@@ -28,11 +29,60 @@ set fo-=B   " don't add space between two multi-byte chars
 set fo+=1   " don't break a line after a one-letter word
 
 syntax on
-
 filetype plugin indent on
+set wildmenu
+" mark trailing spaces as errors
+match IncSearch '\s\+$'
+" turn on default spell checking
+set spell
 
+" Status line
+set laststatus=2            " always show window info
+set statusline+=%m          " modified
+set statusline+=%r          " read only
+set statusline+=%h         	" help status
+set statusline+=%w         	" preview 
+set statusline+=\ %l,%c    	" line,col
+set statusline+=\ (%p%%)   	" percent
+set statusline+=%=         	" left/right separator
+set statusline+=%f\ \ \ \		" relative file path
+" character count + zettel limit warning
+set statusline+=\ C:%{wordcount().chars}%{exists('g:show_warning')?'⚠️\ ':'\ \ '} 
+set statusline+=\ W:%{wordcount().words}	" word count
+
+
+" Prevent truncated yanks, deletes, etc.
+set viminfo='20,<1000,s1000
+
+" Syntax highlighting
+au BufRead,BufNewFile *.adm set syntax=cucumber
+
+" search
+set incsearch                          " search as you type
+set hlsearch                           " highlight search terms
+" pressing leader twice clears search
+map <silent> <esc><esc> :let @/=""<CR>
+set ignorecase                         " case insensitive
+set smartcase                          " case sensitive for uppercase
+
+
+" ---------- key remaps for faster navigation ----------
+" Use `Esc+;` instead of `Esc+Shift+;`
+nnoremap ; :
+" [copied from rwxrob] Make `Y` consistent with D and C (yank till end) 
+map Y y$
+" Better page down and page up
+noremap <C-n> <C-d>
+noremap <C-p> <C-b>
+" Clear search highlight
+nnoremap <C-l> :nohl<CR><C-l>
+
+" ---------- Custom behaviours ----------
 " fzf support
 set rtp+=/opt/homebrew/opt/fzf
+
+" [copied from rwxrob] start at last place you were editing
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 " Autosave after 5 seconds of inactivity
 set updatetime=5000
@@ -62,17 +112,8 @@ augroup autosave_on_idle
 augroup END
 
 
-" mark trailing spaces as errors
-match IncSearch '\s\+$'
-
-" turn on default spell checking
-set spell
-
-" allow sensing the file type
-filetype plugin on
-
 " Warn after 1000 characters. Useful for Zettelkasten
-" Function to toggle warning visibility (blinking animation)
+" Blinking animation
 function! BlinkZettelWarning(timer_id)
 	" Check total number of characters
 	let totalChars = strlen(join(getline(1, '$'), "\n"))
@@ -86,8 +127,7 @@ function! BlinkZettelWarning(timer_id)
 	" Trigger status line update
 	redrawstatus
 endfunction
-
-" Function to toggle display of zettel limit warning
+" Function to toggle zettel warning
 function! ToggleZettelWarning()
 	" Check if blinking timer exists and is active
 	if exists('s:blink_timer')
@@ -104,47 +144,10 @@ function! ToggleZettelWarning()
 	" Update status line to reflect change
 	redrawstatus
 endfunction
-
 command! ZetWarn call ToggleZettelWarning()
-
 " Start timer to blink zettel warning
 let s:blink_timer = timer_start(500, 'BlinkZettelWarning', {'repeat': -1})
 
-
-" Status line
-set laststatus=2                    			" always show window info
-set statusline+=%m                  			" modified
-set statusline+=%r                  			" read only
-set statusline+=%h                  			" help status 
-set statusline+=%w                  			" preview 
-set statusline+=\ %l,%c             			" line,col
-set statusline+=\ (%p%%)            			" percent
-set statusline+=%=                  			" left/right separator
-set statusline+=%f\ \ \ \            			" relative file path
-" character count + zettel limit warning
-set statusline+=\ C:%{wordcount().chars}%{exists('g:show_warning')?'⚠️\ ':'\ \ '} 
-set statusline+=\ W:%{wordcount().words}	" word count
-
-" Better page down and page up
-noremap <C-n> <C-d>
-noremap <C-p> <C-b>
-
-" Prevent truncated yanks, deletes, etc.
-set viminfo='20,<1000,s1000
-
-" Syntax highlighting
-au BufRead,BufNewFile *.adm set syntax=cucumber
-
-" search
-set incsearch                          " search as you type
-set hlsearch                           " highlight search terms
-" pressing leader twice clears search
-map <silent> <esc><esc> :let @/=""<CR>
-set ignorecase                         " case insensitive
-set smartcase                          " case sensitive for uppercase
-
-" Attack Defense modeling
-" au BufNewFile,BufRead *.adm,*.adspec call SetFileTypeSH("feature")
 
 " ----- Additional settings (copied from rwxrob's dotfiles) -----
 
@@ -204,14 +207,6 @@ au FileType markdown syntax match mkdCheckedItem /\s*- \[x\].*/
 au FileType markdown syntax match mkdCheckedItem /\s*- \[X\].*/
 au FileType markdown hi mkdCheckedItem cterm=strikethrough gui=strikethrough ctermfg=darkgray guifg=darkgray
 
-" Go specific settings
-let g:ale_sign_error = '☠'
-let g:ale_sign_warning = '🙄'
-let g:ale_linters = {'go': ['gometalinter', 'gofmt','gobuild']}
-
-" Disable Copilot on startup
-let g:copilot_enabled = v:false
-
 " ---------- language servers ----------
 
 " General LSP settings
@@ -248,4 +243,13 @@ endif
 
 " go LSP settings
 let g:go_auto_type_info = 0
+let g:ale_sign_error = '☠'
+let g:ale_sign_warning = '🙄'
+let g:ale_linters = {'go': ['gometalinter', 'gofmt','gobuild']}
+
+" Disable Copilot on startup
+let g:copilot_enabled = v:false
+
+" Attack Defense modeling
+" au BufNewFile,BufRead *.adm,*.adspec call SetFileTypeSH("feature")
 
