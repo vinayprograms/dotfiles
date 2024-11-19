@@ -8,6 +8,8 @@ set relativenumber
 set autoindent smartindent
 set conceallevel=2
 set showcmd " show partially entered commands
+set termguicolors
+colorscheme gruvbox
 
 set breakindent linebreak breakindentopt=,min:40
 set fo-=t   " don't auto-wrap text using text width
@@ -34,7 +36,7 @@ set wildmenu
 " mark trailing spaces as errors
 match IncSearch '\s\+$'
 " turn on default spell checking
-set spell
+set spell spelllang=en_us
 
 " Status line
 set laststatus=2            " always show window info
@@ -47,7 +49,7 @@ set statusline+=\ (%p%%)   	" percent
 set statusline+=%=         	" left/right separator
 set statusline+=%f\ \ \ \		" relative file path
 " character count + zettel limit warning
-set statusline+=\ C:%{wordcount().chars}%{exists('g:show_warning')?'⚠️\ ':'\ \ '} 
+set statusline+=\ C:%{wordcount().chars}%{exists('g:show_warning')?'⚠️\ ':'\ \ '}
 set statusline+=\ W:%{wordcount().words}	" word count
 
 
@@ -69,13 +71,13 @@ set smartcase                          " case sensitive for uppercase
 " ---------- key remaps for faster navigation ----------
 " Use `Esc+;` instead of `Esc+Shift+;`
 nnoremap ; :
-" [copied from rwxrob] Make `Y` consistent with D and C (yank till end) 
+" [copied from rwxrob] Make `Y` consistent with D and C (yank till end)
 map Y y$
 " Better page down and page up
 noremap <C-n> <C-d>
 noremap <C-p> <C-b>
 " Clear search highlight
-nnoremap <C-l> :nohl<CR><C-l>
+nnoremap <C-c> :nohl<CR><C-l>
 
 " ---------- Custom behaviours ----------
 " fzf support
@@ -84,7 +86,7 @@ set rtp+=/opt/homebrew/opt/fzf
 " [copied from rwxrob] start at last place you were editing
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-" Autosave after 5 seconds of inactivity
+"Autosave after 5 seconds of inactivity
 set updatetime=5000
 function! AutoSaveAllBuffers()
   let l:current_buffer = bufnr('%')
@@ -152,11 +154,11 @@ let s:blink_timer = timer_start(500, 'BlinkZettelWarning', {'repeat': -1})
 " ----- Additional settings (copied from rwxrob's dotfiles) -----
 
 " base default color changes (gruvbox dark friendly)
-hi StatusLine ctermfg=darkgray ctermbg=NONE
-hi StatusLineNC ctermfg=darkgray ctermbg=NONE
-hi Normal ctermbg=NONE
-hi Special ctermfg=cyan
-hi LineNr ctermfg=gray ctermbg=NONE
+hi StatusLine ctermfg=darkgray guifg=darkgray ctermbg=NONE guibg=NONE
+hi StatusLineNC ctermfg=darkgray guifg=darkgray ctermbg=NONE guibg=NONE
+hi Normal ctermbg=NONE guibg=NONE
+hi Special ctermfg=cyan guifg=cyan
+hi LineNr ctermfg=gray guifg=gray ctermbg=NONE guibg=NONE
 hi SpecialKey ctermfg=darkgray ctermbg=NONE
 hi ModeMsg ctermfg=darkgray cterm=NONE ctermbg=NONE
 hi MoreMsg ctermfg=black ctermbg=NONE
@@ -164,8 +166,8 @@ hi NonText ctermfg=black ctermbg=NONE
 hi vimGlobal ctermfg=black ctermbg=NONE
 hi ErrorMsg ctermbg=234 ctermfg=darkred cterm=NONE
 hi Error ctermbg=234 ctermfg=darkred cterm=NONE
-hi SpellBad ctermbg=234 ctermfg=darkred cterm=NONE
-hi SpellRare ctermbg=234 ctermfg=darkred cterm=NONE
+" hi SpellBad ctermbg=234 ctermfg=darkred cterm=NONE
+" hi SpellRare ctermbg=234 ctermfg=darkred cterm=NONE
 hi Search ctermbg=236 ctermfg=darkred
 hi vimTodo ctermbg=236 ctermfg=darkred
 hi Todo ctermbg=236 ctermfg=darkred
@@ -178,8 +180,12 @@ au FileType * hi Special ctermfg=cyan
 au FileType * hi goComment ctermfg=darkgray ctermbg=NONE
 au FileType * hi ErrorMsg ctermbg=234 ctermfg=darkred cterm=NONE
 au FileType * hi Error ctermbg=234 ctermfg=darkred cterm=NONE
-au FileType * hi SpellBad ctermbg=234 ctermfg=darkred cterm=NONE
-au FileType * hi SpellRare ctermbg=234 ctermfg=darkred cterm=NONE
+let &t_Cs = "\e[4:3m"
+let &t_Ce = "\e[4:0m"
+au FileType * hi SpellBad ctermfg=NONE ctermbg=NONE cterm=undercurl guisp=red
+au FileType * hi SpellCap ctermfg=NONE ctermbg=NONE cterm=undercurl guisp=yellow
+au FileType * hi SpellRare ctermfg=NONE ctermbg=NONE cterm=undercurl guisp=blue
+au FileType * hi SpellLocal ctermfg=NONE ctermbg=NONE cterm=undercurl guisp=orange
 au FileType * hi Search ctermbg=236 ctermfg=darkred
 au FileType * hi vimTodo ctermbg=236 ctermfg=darkred
 au FileType * hi Todo ctermbg=236 ctermfg=darkred
@@ -240,6 +246,12 @@ autocmd ModeChanged * call UpdateStatusLineColor()
 " Update the status line on startup
 autocmd VimEnter * call UpdateStatusLineColor()
 
+if has("termguicolors")
+  let &t_SI = "\e[5 q" " Blinking bar for Insert mode
+  let &t_SR = "\e[4 q" " Blinking underline for Replace mode
+  let &t_EI = "\e[1 q" " Block cursor for Normal mode
+endif
+
 " ---------- language servers ----------
 
 " General LSP settings
@@ -282,7 +294,4 @@ let g:ale_linters = {'go': ['gometalinter', 'gofmt','gobuild']}
 
 " Disable Copilot on startup
 let g:copilot_enabled = v:false
-
-" Attack Defense modeling
-" au BufNewFile,BufRead *.adm,*.adspec call SetFileTypeSH("feature")
 
