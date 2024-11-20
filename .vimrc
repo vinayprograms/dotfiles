@@ -3,7 +3,7 @@ set autowrite
 set showmode
 set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2 smarttab
-set number ruler
+set number ruler relativenumber
 set autoindent smartindent
 set conceallevel=2
 set showcmd " show partially entered commands
@@ -146,11 +146,7 @@ map <silent> <esc><esc> :let @/=""<CR>
 set ignorecase                         " case insensitive
 set smartcase                          " case sensitive for uppercase
 
-" Attack Defense modeling
-" au BufNewFile,BufRead *.adm,*.adspec call SetFileTypeSH("feature")
-
 " ----- Additional settings (copied from rwxrob's dotfiles) -----
-
 " base default color changes (gruvbox dark friendly)
 hi StatusLine ctermfg=darkgray ctermbg=NONE
 hi StatusLineNC ctermfg=darkgray ctermbg=NONE
@@ -215,6 +211,12 @@ let g:ale_linters = {'go': ['gometalinter', 'gofmt','gobuild']}
 " Disable Copilot on startup
 let g:copilot_enabled = v:false
 
+" ---------- folding ----------
+set foldenable foldmethod=indent
+set foldlevel=99
+" Use <space> in normal mode to toggle fold
+nnoremap <tab> za
+
 " ---------- Better mode visuals ----------
 " Define highlight groups for different modes
 highlight StatusLineNormal ctermfg=darkgray ctermbg=black guifg=#ffffff guibg=#005f87
@@ -247,6 +249,13 @@ autocmd ModeChanged * call UpdateStatusLineColor()
 
 " Update the status line on startup
 autocmd VimEnter * call UpdateStatusLineColor()
+
+" Change cursor shape for better visuals
+if has("termguicolors")
+    let &t_SI = "\e[5 q" " Cursor shape for Insert mode (blinking bar)
+    let &t_SR = "\e[4 q" " Cursor shape for Replace mode (blinking underline)
+    let &t_EI = "\e[1 q" " Cursor shape for Normal mode (block)
+endif
 
 " ---------- language servers ----------
 
