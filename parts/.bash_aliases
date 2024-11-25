@@ -23,16 +23,17 @@ alias push="git push"
 alias pull="git pull"
 
 # taskwarrior shortcuts
-alias t="tasksync"
+alias t="task"
 alias tui="taskwarrior-tui"
-alias ta="taskpush add"
-alias tc="taskpull completed"
-alias tp="taskpull projects"
-alias tl="taskpull next"
-alias tw="tasksync waiting"
-alias te="tasksync edit"
+alias ta="task add"
+alias tc="task completed"
+alias tp="task projects"
+alias tl="task next"
+alias tw="task waiting"
+alias te="task edit"
 alias tm="taskmodify"
-alias n="tasksync -rnr +UNBLOCKED"
+alias in="inbox" # `inbox` is a custom script that uses taskwarrior
+alias tn="task -rnr +UNBLOCKED"
 alias prjl="prj list"
 alias in="inbox" # `inbox` is a custom script that uses taskwarrior
 

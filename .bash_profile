@@ -1,4 +1,4 @@
-SCRIPT_DIR=$( cd -- "$( dirname -- "$(readlink -f ${BASH_SOURCE[0]})" )" &> /dev/null && pwd )
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 if [[ -f "$SCRIPT_DIR/parts/.bash_aliases" ]] ; then
 	source "$SCRIPT_DIR/parts/.bash_aliases"
@@ -13,11 +13,16 @@ fi
 
 tic -x "$SCRIPT_DIR"/xterm-256color-italic.terminfo
 
+#if [ -t 1 ]; then
 export TERM=xterm-256color-italic
+#fi
+
 export force_color_prompt=yes
 export EDITOR=vim
+#export EDITOR="$HOME/.local/bin/toolsh/emacs-editor"
 set -o vi
 set show-mode-in-prompt on
+bind '"C-i":complete'
 
 # enable programmable completion features
 if ! shopt -oq posix; then
@@ -44,6 +49,5 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
-
 
 export PS1='[📂 \[\033[1;34m\]\W\[\033[00m\]]▶ '
