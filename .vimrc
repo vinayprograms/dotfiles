@@ -4,12 +4,11 @@ set autowrite
 set showmode
 set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2 smarttab
-set relativenumber
+set number ruler relativenumber
 set autoindent smartindent
 set conceallevel=2
 set showcmd " show partially entered commands
-set termguicolors
-colorscheme gruvbox
+set backspace=indent,eol,start
 
 set breakindent linebreak breakindentopt=,min:40
 set fo-=t   " don't auto-wrap text using text width
@@ -43,7 +42,7 @@ set laststatus=2            " always show window info
 set statusline+=%m          " modified
 set statusline+=%r          " read only
 set statusline+=%h         	" help status
-set statusline+=%w         	" preview 
+set statusline+=%w         	" preview
 set statusline+=\ %l,%c    	" line,col
 set statusline+=\ (%p%%)   	" percent
 set statusline+=%=         	" left/right separator
@@ -56,9 +55,6 @@ set statusline+=\ W:%{wordcount().words}	" word count
 " Prevent truncated yanks, deletes, etc.
 set viminfo='20,<1000,s1000
 
-" Syntax highlighting
-au BufRead,BufNewFile *.adm set syntax=cucumber
-
 " search
 set incsearch                          " search as you type
 set hlsearch                           " highlight search terms
@@ -69,7 +65,7 @@ set smartcase                          " case sensitive for uppercase
 
 
 " ---------- key remaps for faster navigation ----------
-" Use `Esc+;` instead of `Esc+Shift+;`
+" Use ';' instead of ':'. This requires only one key-combo instead of two
 nnoremap ; :
 " [copied from rwxrob] Make `Y` consistent with D and C (yank till end)
 map Y y$
@@ -150,9 +146,20 @@ command! ZetWarn call ToggleZettelWarning()
 " Start timer to blink zettel warning
 let s:blink_timer = timer_start(500, 'BlinkZettelWarning', {'repeat': -1})
 
+" search
+set incsearch                          " search as you type
+set hlsearch                           " highlight search terms
+" pressing leader twice clears search
+map <silent> <esc><esc> :let @/=""<CR>
+set ignorecase                         " case insensitive
+set smartcase                          " case sensitive for uppercase
+
+" If using tmux, set the pane title to the file opened by vim. On exit, reset
+" the name to the shell name.
+autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%:t"))
+autocmd VimLeave * call system("tmux rename-window " . fnamemodify($SHELL, ':t'))
 
 " ----- Additional settings (copied from rwxrob's dotfiles) -----
-
 " base default color changes (gruvbox dark friendly)
 hi StatusLine ctermfg=darkgray guifg=darkgray ctermbg=NONE guibg=NONE
 hi StatusLineNC ctermfg=darkgray guifg=darkgray ctermbg=NONE guibg=NONE
@@ -182,10 +189,10 @@ au FileType * hi ErrorMsg ctermbg=234 ctermfg=darkred cterm=NONE
 au FileType * hi Error ctermbg=234 ctermfg=darkred cterm=NONE
 let &t_Cs = "\e[4:3m"
 let &t_Ce = "\e[4:0m"
-au FileType * hi SpellBad ctermfg=NONE ctermbg=NONE cterm=undercurl guisp=red
-au FileType * hi SpellCap ctermfg=NONE ctermbg=NONE cterm=undercurl guisp=yellow
-au FileType * hi SpellRare ctermfg=NONE ctermbg=NONE cterm=undercurl guisp=blue
-au FileType * hi SpellLocal ctermfg=NONE ctermbg=NONE cterm=undercurl guisp=orange
+au FileType * hi SpellBad ctermfg=NONE ctermbg=NONE cterm=undercurl gui=undercurl guisp=red
+au FileType * hi SpellCap ctermfg=NONE ctermbg=NONE cterm=undercurl gui=undercurl guisp=yellow
+au FileType * hi SpellRare ctermfg=NONE ctermbg=NONE cterm=undercurl gui=undercurl guisp=blue
+au FileType * hi SpellLocal ctermfg=NONE ctermbg=NONE cterm=undercurl gui=undercurl guisp=orange
 au FileType * hi Search ctermbg=236 ctermfg=darkred
 au FileType * hi vimTodo ctermbg=236 ctermfg=darkred
 au FileType * hi Todo ctermbg=236 ctermfg=darkred
@@ -207,11 +214,30 @@ au FileType markdown,pandoc hi markdownCode ctermfg=darkblue ctermbg=NONE
 au FileType markdown,pandoc set tw=0
 au FileType markdown setlocal shiftwidth=2 softtabstop=2
 autocmd FileType markdown syntax enable
-au FileType markdown,pandoc noremap j gj
-au FileType markdown,pandoc noremap k gk
 au FileType markdown syntax match mkdCheckedItem /\s*- \[x\].*/
 au FileType markdown syntax match mkdCheckedItem /\s*- \[X\].*/
 au FileType markdown hi mkdCheckedItem cterm=strikethrough gui=strikethrough ctermfg=darkgray guifg=darkgray
+
+" Go specific settings
+let g:ale_sign_error = '☠'
+let g:ale_sign_warning = '🙄'
+let g:ale_linters = {'go': ['gometalinter', 'gofmt','gobuild']}
+
+" Disable Copilot on startup
+let g:copilot_enabled = v:false
+
+" ---------- ctags ----------
+let mapleader = ","
+nnoremap <leader>t :tag <C-R><C-W><CR>
+nnoremap <leader>b :pop<CR>
+nnoremap <leader>n :tnext<CR>
+nnoremap <leader>p :tprev<CR>
+
+" ---------- folding ----------
+set foldenable foldmethod=indent
+set foldlevel=99
+" Use <tab> in normal mode to toggle fold
+nnoremap <tab> za
 
 " ---------- Better mode visuals ----------
 " Define highlight groups for different modes
@@ -234,6 +260,7 @@ function! UpdateStatusLineColor()
     endif
 endfunction
 
+
 " Trigger the function on various mode change events
 autocmd InsertEnter,InsertLeave * call UpdateStatusLineColor()
 autocmd CmdlineEnter,CmdlineLeave * call UpdateStatusLineColor()
@@ -246,6 +273,7 @@ autocmd ModeChanged * call UpdateStatusLineColor()
 " Update the status line on startup
 autocmd VimEnter * call UpdateStatusLineColor()
 
+" Change cursor shape for better visuals
 if has("termguicolors")
   let &t_SI = "\e[5 q" " Blinking bar for Insert mode
   let &t_SR = "\e[4 q" " Blinking underline for Replace mode
@@ -254,10 +282,39 @@ endif
 
 " ---------- language servers ----------
 
-" General LSP settings
-noremap <silent> gd :LspDefinition<CR>
-noremap <silent> gr :LspReferences<CR>
-noremap <silent> K :LspHover<CR>
+nnoremap gh <C-o>
+nnoremap gl <C-i>
+
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+    nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+
+    " refer to doc to add more commands
+endfunction
+
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+let g:lsp_auto_enable = 1
 
 " Bash LSP
 if executable('bash-language-server')
@@ -294,4 +351,7 @@ let g:ale_linters = {'go': ['gometalinter', 'gofmt','gobuild']}
 
 " Disable Copilot on startup
 let g:copilot_enabled = v:false
+
+let g:fzf_layout = { 'down': '~40%' }
+autocmd VimEnter * if isdirectory(expand('%')) | call fzf#run(fzf#wrap({'source': 'find . -type f', 'sink': 'e'})) | endif
 
