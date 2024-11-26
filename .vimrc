@@ -233,6 +233,14 @@ nnoremap <leader>b :pop<CR>
 nnoremap <leader>n :tnext<CR>
 nnoremap <leader>p :tprev<CR>
 
+" ---------- delete versus cut-paste ----------
+" Remap `d` and `x` to avoid yanking in normal mode
+nnoremap d "_d
+nnoremap x "_x
+" Allow cut-paste in Visual mode by not overriding `d` and `x` in Visual mode
+xnoremap <silent> d d
+xnoremap <silent> x x
+
 " ---------- folding ----------
 set foldenable foldmethod=indent
 set foldlevel=99
