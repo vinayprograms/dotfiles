@@ -239,6 +239,16 @@ set foldlevel=99
 " Use <tab> in normal mode to toggle fold
 nnoremap <tab> za
 
+" ---------- versus cut-paste ----------
+
+" Remap `d` and `x` to avoid yanking in normal mode
+nnoremap d "_d
+nnoremap x "_x
+
+" Allow cut-paste in Visual mode by not overriding `d` and `x` in Visual mode
+xnoremap <silent> d d
+xnoremap <silent> x x
+
 " ---------- Better mode visuals ----------
 " Define highlight groups for different modes
 highlight StatusLineNormal ctermfg=darkgray ctermbg=black guifg=#ffffff guibg=#005f87
@@ -281,6 +291,21 @@ if has("termguicolors")
 endif
 
 " ---------- language servers ----------
+
+function! GoToTagIfOnlyOne()
+    " Save the current tag stack before executing g]
+    let l:taglist = taglist(expand('<cword>'))
+    if len(l:taglist) == 1
+        " If only one tag match, jump to it directly
+        execute 'tag ' . l:taglist[0].name
+    else
+        " Otherwise, show the usual tag selection list
+        execute 'tjump ' . expand('<cword>')
+    endif
+endfunction
+
+" Map g] to call the custom function
+nnoremap <silent> gd :call GoToTagIfOnlyOne()<CR>
 
 nnoremap gh <C-o>
 nnoremap gl <C-i>
@@ -342,6 +367,16 @@ if executable('pylsp')
 				\ 'whitelist': ['python'],
 				\ })
 endif
+
+" Ruby LSP
+if executable('bundle')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'sorbet',
+        \ 'cmd': ['bundle', 'exec', 'srb', 'tc', '--lsp'],
+        \ 'whitelist': ['ruby'],
+        \ })
+endif
+
 
 " go LSP settings
 let g:go_auto_type_info = 0
