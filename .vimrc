@@ -263,10 +263,10 @@ endfunction
 function! ToggleMarkdownCheckbox()
     " Toggle a markdown checkbox between [ ] and [x]
     let l:line = getline('.')
-    if l:line =~ '\s*-\s\[\s\]'
-        execute "s/\v\s*-\s\[\s\]/- [x]/"
-    elseif l:line =~ '\s*-\s\[x\]'
-        execute "s/\v\s*-\s\[x\]/- [ ]/"
+    if l:line =~ '\s*- \[ \]'
+        execute "s/\\v^\(\\s*\)- \\[ \\]/\\1- \\[x\\]/"
+    elseif l:line =~ '\s*- \[\(x\|X\)\]'
+        execute "s/\\v^\(\\s*\)- \\[\(x\|X\)\\]/\\1- \\[ \\]/"
     endif
 endfunction
 
