@@ -222,12 +222,15 @@ let mapleader = "m"
 " Make the current word bold, italic, or strikethrough
 nnoremap <leader>b :call MarkdownWrapWord('**')<CR>
 xnoremap <leader>b :<C-u>call MarkdownWrap('**')<CR>
+nnoremap <leader>gb :call MarkdownWrapLine('**')<CR>
 
 nnoremap <leader>i :call MarkdownWrapWord('*')<CR>
 xnoremap <leader>i :<C-u>call MarkdownWrap('*')<CR>
+nnoremap <leader>gi :call MarkdownWrapLine('*')<CR>
 
 nnoremap <leader>s :call MarkdownWrapWord('~~')<CR>
 xnoremap <leader>s :<C-u>call MarkdownWrap('~~')<CR>
+nnoremap <leader>gs :call MarkdownWrapLine('~~')<CR>
 
 " Toggle a checkbox without requiring selection
 nnoremap <leader>x :call ToggleMarkdownCheckbox()<CR>
@@ -248,6 +251,13 @@ function! MarkdownWrapWord(mark)
     execute "normal! viw"
     " Wrap it with marks
     execute "normal! c" . l:mark . "\<C-r>\"" . l:mark
+endfunction
+
+function! MarkdownWrapLine(mark)
+    " Wrap the entire current line with the markdown mark
+    let l:mark = a:mark
+    execute "normal! 0"  " Move to the beginning of the line
+    execute "normal! c" . l:mark . getline('.') . l:mark
 endfunction
 
 function! ToggleMarkdownCheckbox()
