@@ -8,6 +8,7 @@ set autoindent smartindent
 set conceallevel=2
 set showcmd " show partially entered commands
 set backspace=indent,eol,start
+set showtabline=2
 
 set breakindent linebreak breakindentopt=,min:40
 set fo-=t   " don't auto-wrap text using text width
@@ -37,6 +38,7 @@ match IncSearch '\s\+$'
 set spell spelllang=en_us
 
 " Status line
+set statusline=             " Clear statusline first
 set laststatus=2            " always show window info
 set statusline+=%m          " modified
 set statusline+=%r          " read only
@@ -63,9 +65,24 @@ set ignorecase                         " case insensitive
 set smartcase                          " case sensitive for uppercase
 
 
+
+" ---------- Tabbed editing ----------
+autocmd VimEnter * tab all
+if argc() > 1
+  tab all
+endif
+command! -nargs=1 -complete=file T tabedit <args>
+command! -nargs=1 -complete=file E tabedit <args>
+cabbrev t T
+cabbrev e E
+nnoremap <silent> tn :tabnext<CR>
+nnoremap <silent> tp :tabprevious<CR>
+nnoremap <silent> tt :tabnew<CR>
+nnoremap <silent> tc :tabclose<CR>
+
 " ---------- key remaps for faster navigation ----------
 " Use ';' instead of ':'. This requires only one key-combo instead of two
-nnoremap ; :
+ nnoremap ;; :
 " [copied from rwxrob] Make `Y` consistent with D and C (yank till end)
 map Y y$
 " Better page down and page up
@@ -73,6 +90,22 @@ noremap <C-n> <C-d>
 noremap <C-p> <C-b>
 " Clear search highlight
 nnoremap <C-c> :nohl<CR><C-l>
+let mapleader = ';'
+nnoremap <leader>x :<C-u>.!<Space>
+nnoremap <leader>X :r!!<CR>
+nnoremap <leader>h <C-w>h
+nnoremap <leader>j <C-w>j
+nnoremap <leader>k <C-w>k
+nnoremap <leader>l <C-w>l
+
+" ---------- parentheses matching ----------
+inoremap ( ()<Left>
+inoremap () ()
+inoremap { {}<Left>
+inoremap {} {}
+inoremap {<CR> {<CR>}<Esc>ko
+inoremap ` ``<Left>
+inoremap `` ``
 
 " ---------- Custom behaviours ----------
 " fzf support
@@ -217,23 +250,23 @@ au FileType markdown syntax match mkdCheckedItem /\s*- \[X\].*/
 au FileType markdown hi mkdCheckedItem cterm=strikethrough gui=strikethrough ctermfg=darkgray guifg=darkgray
 
 " Use `m` as a leader key for markdown operations
-let mapleader = "m"
+"let mapleader = "m"
 
 " Make the current word bold, italic, or strikethrough
-nnoremap <leader>b :call MarkdownWrapWord('**')<CR>
-xnoremap <leader>b :<C-u>call MarkdownWrap('**')<CR>
-nnoremap <leader>gb :call MarkdownWrapLine('**')<CR>
+nnoremap mb :call MarkdownWrapWord('**')<CR>
+xnoremap mb :<C-u>call MarkdownWrap('**')<CR>
+nnoremap mgb :call MarkdownWrapLine('**')<CR>
 
-nnoremap <leader>i :call MarkdownWrapWord('*')<CR>
-xnoremap <leader>i :<C-u>call MarkdownWrap('*')<CR>
-nnoremap <leader>gi :call MarkdownWrapLine('*')<CR>
+nnoremap mi :call MarkdownWrapWord('*')<CR>
+xnoremap mi :<C-u>call MarkdownWrap('*')<CR>
+nnoremap mgi :call MarkdownWrapLine('*')<CR>
 
-nnoremap <leader>s :call MarkdownWrapWord('~~')<CR>
-xnoremap <leader>s :<C-u>call MarkdownWrap('~~')<CR>
-nnoremap <leader>gs :call MarkdownWrapLine('~~')<CR>
+nnoremap ms :call MarkdownWrapWord('~~')<CR>
+xnoremap ms :<C-u>call MarkdownWrap('~~')<CR>
+nnoremap mgs :call MarkdownWrapLine('~~')<CR>
 
 " Toggle a checkbox without requiring selection
-nnoremap <leader>x :call ToggleMarkdownCheckbox()<CR>
+nnoremap mx :call ToggleMarkdownCheckbox()<CR>
 
 " Functions for markdown operations
 " Functions to handle wrapping and toggling
@@ -256,7 +289,8 @@ endfunction
 function! MarkdownWrapLine(mark)
     " Wrap the entire current line with the markdown mark
     let l:mark = a:mark
-    execute "normal! 0"  " Move to the beginning of the line
+    " Move to the beginning of the line
+    execute "normal! 0"  
     execute "normal! c" . l:mark . getline('.') . l:mark
 endfunction
 
@@ -274,6 +308,24 @@ endfunction
 let g:ale_sign_error = '☠'
 let g:ale_sign_warning = '🙄'
 let g:ale_linters = {'go': ['gometalinter', 'gofmt','gobuild']}
+let g:go_debug_windows = {
+      \ 'vars':       'rightbelow 50vnew',
+      \ 'out':        'botright 5new',
+      \ }
+let g:go_debug_config = {
+    \ 'variables': {
+    \ 'exclude_categories': ['Registers']
+    \}
+\ }
+let g:go_debug_mappings = {
+      \ '(go-debug-continue)': {'key': 'c', 'arguments': '<nowait>'},
+      \ '(go-debug-next)': {'key': 'n', 'arguments': '<nowait>'},
+      \ '(go-debug-step)': {'key': 's'},
+      \ '(go-debug-print)': {'key': 'p'},
+  \}
+let g:go_debug_log_output = ''
+map gds :GoDebugStop<cr>
+map gdb :GoDebugBreakpoint<cr>
 
 " ---------- Github Copilot ----------
 " Disable Copilot on startup
@@ -281,10 +333,10 @@ let g:copilot_enabled = v:false
 
 " ---------- ctags ----------
 let mapleader = ","
-nnoremap <leader>t :tag <C-R><C-W><CR>
-nnoremap <leader>b :pop<CR>
-nnoremap <leader>n :tnext<CR>
-nnoremap <leader>p :tprev<CR>
+nnoremap ,t :tag <C-R><C-W><CR>
+nnoremap ,b :pop<CR>
+nnoremap ,n :tnext<CR>
+nnoremap ,p :tprev<CR>
 
 " ---------- delete versus cut-paste ----------
 " Remap `d` and `x` to avoid yanking in normal mode
