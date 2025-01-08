@@ -1,10 +1,9 @@
 " ---------- Customize editing experience ----------
-set nu
 set autowrite
 set showmode
 set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2 smarttab
-set number ruler relativenumber
+" set number ruler relativenumber
 set autoindent smartindent
 set conceallevel=2
 set showcmd " show partially entered commands
@@ -109,7 +108,6 @@ augroup autosave_on_idle
   autocmd CursorHold,CursorHoldI * call AutoSaveAllBuffers()
 augroup END
 
-
 " Warn after 1000 characters. Useful for Zettelkasten
 " Blinking animation
 function! BlinkZettelWarning(timer_id)
@@ -203,7 +201,7 @@ au FileType yaml set sw=2
 au FileType bash set sw=2
 au FileType c set sw=8
 
-" markdown specific settings
+" ---------- markdown specific settings ----------
 let g:vim_markdown_math = v:true
 let g:vim_markdown_strikethrough=v:true
 highlight mkdStrike ctermfg=lightgray guifg=lightgray cterm=strikethrough gui=strikethrough
@@ -218,11 +216,66 @@ au FileType markdown syntax match mkdCheckedItem /\s*- \[x\].*/
 au FileType markdown syntax match mkdCheckedItem /\s*- \[X\].*/
 au FileType markdown hi mkdCheckedItem cterm=strikethrough gui=strikethrough ctermfg=darkgray guifg=darkgray
 
-" Go specific settings
+" Use `m` as a leader key for markdown operations
+let mapleader = "m"
+
+" Make the current word bold, italic, or strikethrough
+nnoremap <leader>b :call MarkdownWrapWord('**')<CR>
+xnoremap <leader>b :<C-u>call MarkdownWrap('**')<CR>
+nnoremap <leader>gb :call MarkdownWrapLine('**')<CR>
+
+nnoremap <leader>i :call MarkdownWrapWord('*')<CR>
+xnoremap <leader>i :<C-u>call MarkdownWrap('*')<CR>
+nnoremap <leader>gi :call MarkdownWrapLine('*')<CR>
+
+nnoremap <leader>s :call MarkdownWrapWord('~~')<CR>
+xnoremap <leader>s :<C-u>call MarkdownWrap('~~')<CR>
+nnoremap <leader>gs :call MarkdownWrapLine('~~')<CR>
+
+" Toggle a checkbox without requiring selection
+nnoremap <leader>x :call ToggleMarkdownCheckbox()<CR>
+
+" Functions for markdown operations
+" Functions to handle wrapping and toggling
+function! MarkdownWrap(mark)
+    " Wrap the visually selected text with the markdown mark
+    let l:mark = a:mark
+    let l:text = getline("'<")[getpos("'<")[2]-1 : getpos("'>")[2]-2]
+    call setline('.', substitute(getline('.'), l:text, l:mark . l:text . l:mark, ''))
+endfunction
+
+function! MarkdownWrapWord(mark)
+    " Wrap the current word under the cursor with the markdown mark
+    let l:mark = a:mark
+    " Visually select the word
+    execute "normal! viw"
+    " Wrap it with marks
+    execute "normal! c" . l:mark . "\<C-r>\"" . l:mark
+endfunction
+
+function! MarkdownWrapLine(mark)
+    " Wrap the entire current line with the markdown mark
+    let l:mark = a:mark
+    execute "normal! 0"  " Move to the beginning of the line
+    execute "normal! c" . l:mark . getline('.') . l:mark
+endfunction
+
+function! ToggleMarkdownCheckbox()
+    " Toggle a markdown checkbox between [ ] and [x]
+    let l:line = getline('.')
+    if l:line =~ '\s*- \[ \]'
+        execute "s/\\v^\(\\s*\)- \\[ \\]/\\1- \\[x\\]/"
+    elseif l:line =~ '\s*- \[\(x\|X\)\]'
+        execute "s/\\v^\(\\s*\)- \\[\(x\|X\)\\]/\\1- \\[ \\]/"
+    endif
+endfunction
+
+" ---------- Go specific settings ----------
 let g:ale_sign_error = '☠'
 let g:ale_sign_warning = '🙄'
 let g:ale_linters = {'go': ['gometalinter', 'gofmt','gobuild']}
 
+" ---------- Github Copilot ----------
 " Disable Copilot on startup
 let g:copilot_enabled = v:false
 
@@ -233,13 +286,21 @@ nnoremap <leader>b :pop<CR>
 nnoremap <leader>n :tnext<CR>
 nnoremap <leader>p :tprev<CR>
 
+" ---------- delete versus cut-paste ----------
+" Remap `d` and `x` to avoid yanking in normal mode
+nnoremap d "_d
+nnoremap x "_x
+" Allow cut-paste in Visual mode by not overriding `d` and `x` in Visual mode
+xnoremap <silent> d d
+xnoremap <silent> x x
+
 " ---------- folding ----------
 set foldenable foldmethod=indent
 set foldlevel=99
 " Use <tab> in normal mode to toggle fold
 nnoremap <tab> za
 
-" ---------- versus cut-paste ----------
+" ---------- delete versus cut-paste ----------
 
 " Remap `d` and `x` to avoid yanking in normal mode
 nnoremap d "_d
@@ -304,7 +365,7 @@ function! GoToTagIfOnlyOne()
     endif
 endfunction
 
-" Map g] to call the custom function
+" Map gd to call the custom function
 nnoremap <silent> gd :call GoToTagIfOnlyOne()<CR>
 
 nnoremap gh <C-o>
