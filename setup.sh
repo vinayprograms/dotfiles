@@ -1,9 +1,8 @@
 #!/bin/bash
 
-test -z $(command -v entr) && { echo >&2 "I require entr but it's not installed.  Aborting."; exit 1; }
-test -z $(command -v fzf) && { echo >&2 "I require fzf but it's not installed.  Aborting."; exit 1; }
-test -z $(command -v bat || command -v batcat) && { echo >&2 "I require bat but it's not installed.  Aborting."; exit 1; }
-
+test -z "$(command -v entr)" && { echo >&2 "I require entr but it's not installed.  Aborting."; exit 1; }
+test -z "$(command -v fzf)" && { echo >&2 "I require fzf but it's not installed.  Aborting."; exit 1; }
+test -z "$(command -v bat || command -v batcat)" && { echo >&2 "I require bat but it's not installed.  Aborting."; exit 1; }
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "$(readlink -f ${BASH_SOURCE[0]})" )" &> /dev/null && pwd )
 

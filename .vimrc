@@ -249,9 +249,6 @@ au FileType markdown syntax match mkdCheckedItem /\s*- \[x\].*/
 au FileType markdown syntax match mkdCheckedItem /\s*- \[X\].*/
 au FileType markdown hi mkdCheckedItem cterm=strikethrough gui=strikethrough ctermfg=darkgray guifg=darkgray
 
-" Use `m` as a leader key for markdown operations
-"let mapleader = "m"
-
 " Make the current word bold, italic, or strikethrough
 nnoremap mb :call MarkdownWrapWord('**')<CR>
 xnoremap mb :<C-u>call MarkdownWrap('**')<CR>
@@ -346,11 +343,29 @@ nnoremap x "_x
 xnoremap <silent> d d
 xnoremap <silent> x x
 
+" ---------- delete versus cut-paste ----------
+" Remap `d` and `x` to avoid yanking in normal mode
+nnoremap d "_d
+nnoremap x "_x
+" Allow cut-paste in Visual mode by not overriding `d` and `x` in Visual mode
+xnoremap <silent> d d
+xnoremap <silent> x x
+
 " ---------- folding ----------
 set foldenable foldmethod=indent
 set foldlevel=99
 " Use <tab> in normal mode to toggle fold
 nnoremap <tab> za
+
+" ---------- delete versus cut-paste ----------
+
+" Remap `d` and `x` to avoid yanking in normal mode
+nnoremap d "_d
+nnoremap x "_x
+
+" Allow cut-paste in Visual mode by not overriding `d` and `x` in Visual mode
+xnoremap <silent> d d
+xnoremap <silent> x x
 
 " ---------- Better mode visuals ----------
 " Define highlight groups for different modes
@@ -470,6 +485,16 @@ if executable('pylsp')
 				\ 'whitelist': ['python'],
 				\ })
 endif
+
+" Ruby LSP
+if executable('bundle')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'sorbet',
+        \ 'cmd': ['bundle', 'exec', 'srb', 'tc', '--lsp'],
+        \ 'whitelist': ['ruby'],
+        \ })
+endif
+
 
 " go LSP settings
 let g:go_auto_type_info = 0
