@@ -265,6 +265,10 @@ nnoremap mgs :call MarkdownWrapLine('~~')<CR>
 " Toggle a checkbox without requiring selection
 nnoremap mx :call ToggleMarkdownCheckbox()<CR>
 
+" Change current word into a markdown link
+nnoremap ml ciw[<C-r>"]()<Esc>i
+vnoremap ml c[<C-r>"]()<Esc>i
+
 " Functions for markdown operations
 " Functions to handle wrapping and toggling
 function! MarkdownWrap(mark)
@@ -299,6 +303,33 @@ function! ToggleMarkdownCheckbox()
     elseif l:line =~ '\s*- \[\(x\|X\)\]'
         execute "s/\\v^\(\\s*\)- \\[\(x\|X\)\\]/\\1- \\[ \\]/"
     endif
+endfunction
+
+autocmd FileType markdown inoremap <buffer> <Tab> <C-o>:call IndentMarkdownBullet()<CR>
+function! IndentMarkdownBullet()
+  " Get current line's text
+  let l:line = getline('.')
+  " Check if line starts with a bullet and has no following text
+  if l:line=~ '^\s*[-*+]\s*$'
+    " Add an extra level of indentation (e.g., 2 spaces or a tab stop)
+    execute "normal! >>$"
+  else
+    execute "normal! i\<Tab>"
+  endif
+endfunction
+
+autocmd FileType markdown inoremap <buffer> <S-Tab> <C-o>:call OutdentMarkdownBullet()<CR>
+function! OutdentMarkdownBullet()
+  "Get the current line's text
+  let l:line = getline('.')
+  " Check if the line starts with a bullet and has no following text
+  if l:line =~ '^\s*[-*+]\s*$'
+    " Outdent the line and move the cursor to the end of the line
+    execute "normal! <<$"
+  else
+    "Otherwise, delete a tab character
+    execute "normal! i<BS>"
+  endif
 endfunction
 
 " ---------- Go specific settings ----------
