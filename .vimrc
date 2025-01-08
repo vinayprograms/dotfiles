@@ -64,8 +64,6 @@ map <silent> <esc><esc> :let @/=""<CR>
 set ignorecase                         " case insensitive
 set smartcase                          " case sensitive for uppercase
 
-
-
 " ---------- Tabbed editing ----------
 autocmd VimEnter * tab all
 if argc() > 1
@@ -374,29 +372,11 @@ nnoremap x "_x
 xnoremap <silent> d d
 xnoremap <silent> x x
 
-" ---------- delete versus cut-paste ----------
-" Remap `d` and `x` to avoid yanking in normal mode
-nnoremap d "_d
-nnoremap x "_x
-" Allow cut-paste in Visual mode by not overriding `d` and `x` in Visual mode
-xnoremap <silent> d d
-xnoremap <silent> x x
-
 " ---------- folding ----------
 set foldenable foldmethod=indent
 set foldlevel=99
 " Use <tab> in normal mode to toggle fold
 nnoremap <tab> za
-
-" ---------- delete versus cut-paste ----------
-
-" Remap `d` and `x` to avoid yanking in normal mode
-nnoremap d "_d
-nnoremap x "_x
-
-" Allow cut-paste in Visual mode by not overriding `d` and `x` in Visual mode
-xnoremap <silent> d d
-xnoremap <silent> x x
 
 " ---------- Better mode visuals ----------
 " Define highlight groups for different modes
@@ -418,7 +398,6 @@ function! UpdateStatusLineColor()
         hi! link StatusLine StatusLineReplace
     endif
 endfunction
-
 
 " Trigger the function on various mode change events
 autocmd InsertEnter,InsertLeave * call UpdateStatusLineColor()
