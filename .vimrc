@@ -289,7 +289,7 @@ function! MarkdownWrapLine(mark)
     " Wrap the entire current line with the markdown mark
     let l:mark = a:mark
     " Move to the beginning of the line
-    execute "normal! 0"  
+    execute "normal! V"
     execute "normal! c" . l:mark . getline('.') . l:mark
 endfunction
 
