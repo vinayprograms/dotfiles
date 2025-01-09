@@ -32,10 +32,12 @@ set fo+=1   " don't break a line after a one-letter word
 syntax on
 filetype plugin indent on
 set wildmenu
-" mark trailing spaces as errors
-match IncSearch '\s\+$'
 " turn on default spell checking
 set spell spelllang=en_us
+
+" ---------- whitespace handling ----------
+hi ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace '\s\+$'
 
 " Status line
 set statusline=             " Clear statusline first
