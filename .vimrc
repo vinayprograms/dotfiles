@@ -9,6 +9,8 @@ set conceallevel=2
 set showcmd " show partially entered commands
 set backspace=indent,eol,start
 set showtabline=2
+set textwidth=75
+set colorcolumn=76
 
 set breakindent linebreak breakindentopt=,min:40
 set fo-=t   " don't auto-wrap text using text width
@@ -202,6 +204,7 @@ hi ModeMsg ctermfg=darkgray cterm=NONE ctermbg=NONE
 hi MoreMsg ctermfg=black ctermbg=NONE
 hi NonText ctermfg=black ctermbg=NONE
 hi vimGlobal ctermfg=black ctermbg=NONE
+hi ColorColumn ctermbg=236 guibg=darkgray
 hi ErrorMsg ctermbg=234 ctermfg=darkred cterm=NONE
 hi Error ctermbg=234 ctermfg=darkred cterm=NONE
 " hi SpellBad ctermbg=234 ctermfg=darkred cterm=NONE
