@@ -83,6 +83,14 @@ nnoremap <silent> tt :tabnew<CR>
 nnoremap <silent> tc :tabclose<CR>
 
 " ---------- key remaps for faster navigation ----------
+" Faster 'star of line' and 'end of line'
+" Map H to ^
+nnoremap H ^
+vnoremap H ^
+" Map L to $
+nnoremap L $
+vnoremap L $
+
 " Use ';' instead of ':'. This requires only one key-combo instead of two
  nnoremap ;; :
 " [copied from rwxrob] Make `Y` consistent with D and C (yank till end)
