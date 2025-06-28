@@ -39,7 +39,7 @@ alias in="inbox" # `inbox` is a custom script that uses taskwarrior
 
 # Generic shortcuts
 alias less="less -iR"
-alias ??="chatgpt"
+alias ??="ai"
 alias swipl="~/.local/swipl-devel/build/src/swipl"
 
 # tmux shortcuts

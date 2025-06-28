@@ -3,14 +3,14 @@ set autowrite
 set showmode
 set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2 smarttab
-" set number ruler relativenumber
+set number ruler relativenumber
 set autoindent smartindent
-set conceallevel=2
 set showcmd " show partially entered commands
 set backspace=indent,eol,start
 set showtabline=2
 set textwidth=75
 set colorcolumn=76
+set cursorline
 
 set breakindent linebreak breakindentopt=,min:40
 set fo-=t   " don't auto-wrap text using text width
@@ -63,10 +63,11 @@ set viminfo='20,<1000,s1000
 " search
 set incsearch                          " search as you type
 set hlsearch                           " highlight search terms
-" pressing leader twice clears search
-map <silent> <esc><esc> :let @/=""<CR>
 set ignorecase                         " case insensitive
-set smartcase                          " case sensitive for uppercase
+set	 smartcase                          " case sensitive for uppercase
+
+" pressing <esc> twice clears search highlight
+nnoremap <Esc><Esc> :nohl<CR><CR>
 
 " ---------- Tabbed editing ----------
 autocmd VimEnter * tab all
@@ -91,22 +92,20 @@ vnoremap H ^
 nnoremap L $
 vnoremap L $
 
-" Use ';' instead of ':'. This requires only one key-combo instead of two
- nnoremap ;; :
 " [copied from rwxrob] Make `Y` consistent with D and C (yank till end)
 map Y y$
 " Better page down and page up
 noremap <C-n> <C-d>
 noremap <C-p> <C-b>
-" Clear search highlight
-nnoremap <C-c> :nohl<CR><C-l>
-let mapleader = ';'
-nnoremap <leader>x :<C-u>.!<Space>
-nnoremap <leader>X :r!!<CR>
-nnoremap <leader>h <C-w>h
-nnoremap <leader>j <C-w>j
-nnoremap <leader>k <C-w>k
-nnoremap <leader>l <C-w>l
+
+" run current text through bash and replace it with output
+nnoremap <Space>x :<C-u>.!bash<CR>
+nnoremap <Space>X :.!!<CR>
+
+nnoremap <Space>h <C-w>h
+nnoremap <Space>j <C-w>j
+nnoremap <Space>k <C-w>k
+nnoremap <Space>l <C-w>l
 
 " ---------- parentheses matching ----------
 inoremap ( ()<Left>
@@ -187,13 +186,6 @@ command! ZetWarn call ToggleZettelWarning()
 " Start timer to blink zettel warning
 let s:blink_timer = timer_start(500, 'BlinkZettelWarning', {'repeat': -1})
 
-" search
-set incsearch                          " search as you type
-set hlsearch                           " highlight search terms
-" pressing leader twice clears search
-map <silent> <esc><esc> :let @/=""<CR>
-set ignorecase                         " case insensitive
-set smartcase                          " case sensitive for uppercase
 
 " If using tmux, set the pane title to the file opened by vim. On exit, reset
 " the name to the shell name.
@@ -248,7 +240,12 @@ au FileType c set sw=8
 " ---------- markdown specific settings ----------
 let g:vim_markdown_math = v:true
 let g:vim_markdown_strikethrough=v:true
+let g:vim_markdown_conceal_code_blocks=0
+let g:vim_markdown_frontmatter=1
+let g:vim_markdown_edit_url_in='tab'
+let g:vim_markdown_follow_anchor=1
 highlight mkdStrike ctermfg=lightgray guifg=lightgray cterm=strikethrough gui=strikethrough
+au BufNewFile,Bufread *.md set filetype=markdown " Treat all .md files as Markdown
 au FileType markdown,pandoc hi Title ctermfg=yellow ctermbg=NONE cterm=bold
 au FileType markdown,pandoc hi Operator ctermfg=yellow ctermbg=NONE cterm=bold
 au FileType markdown,pandoc hi htmlBold ctermfg=254 cterm=bold
@@ -371,7 +368,6 @@ map gdb :GoDebugBreakpoint<cr>
 let g:copilot_enabled = v:false
 
 " ---------- ctags ----------
-let mapleader = ","
 nnoremap ,t :tag <C-R><C-W><CR>
 nnoremap ,b :pop<CR>
 nnoremap ,n :tnext<CR>
@@ -453,7 +449,7 @@ nnoremap gl <C-i>
 
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
+    "setlocal signcolumn=yes
     if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
     nmap <buffer> gd <plug>(lsp-definition)
     nmap <buffer> gs <plug>(lsp-document-symbol-search)
@@ -461,7 +457,7 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> gr <plug>(lsp-references)
     nmap <buffer> gi <plug>(lsp-implementation)
     nmap <buffer> gt <plug>(lsp-type-definition)
-    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> grn <plug>(lsp-rename)
     nmap <buffer> [g <plug>(lsp-previous-diagnostic)
     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
