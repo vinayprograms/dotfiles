@@ -12,3 +12,8 @@ cp "$SCRIPT_DIR"/.gtdrc "$HOME"
 
 ln -sf "$HOME/.local/dotfiles/.tmux.conf" "$HOME/.tmux.conf"
 ln -sf "$HOME/.local/dotfiles/.vimrc" "$HOME/.vimrc"
+
+# Git should ignore ctags files everywhere
+echo "tags" >> ~/.global_ignore
+git config --global core.excludesfile $HOME/.global_ignore
+
