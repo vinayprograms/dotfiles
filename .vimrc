@@ -3,7 +3,7 @@ set autowrite
 set showmode
 set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2 smarttab
-set number ruler relativenumber
+"set number ruler relativenumber
 set autoindent smartindent
 set showcmd " show partially entered commands
 set backspace=indent,eol,start
@@ -14,7 +14,6 @@ set cursorline
 
 set breakindent linebreak breakindentopt=,min:40
 set fo-=t   " don't auto-wrap text using text width
-"set fo+=c   " autowrap comments using textwidth with leader
 set fo-=r   " don't auto-insert comment leader on enter in insert
 set fo-=o   " don't auto-insert comment leader on o/O in normal
 set fo+=q   " allow formatting of comments with gq
@@ -23,8 +22,6 @@ set fo-=a   " disable auto-formatting of paragraph changes
 "set fo-=n   " don't recognized numbered lists
 set fo+=j   " delete comment prefix when joining
 set fo-=2   " don't use the indent of second paragraph line
-"set fo-=v   " don't use broken 'vi-compatible auto-wrapping'
-"set fo-=b   " don't use broken 'vi-compatible auto-wrapping'
 set fo+=l   " long lines not broken in insert mode
 set fo+=m   " multi-byte character line break support
 set fo+=M   " don't add space before or after multi-byte char
@@ -101,20 +98,14 @@ noremap <C-p> <C-b>
 " run current text through bash and replace it with output
 nnoremap <Space>x :<C-u>.!bash<CR>
 nnoremap <Space>X :.!!<CR>
+nnoremap <space>o :execute '!open ' . fnameescape(fnamemodify(expand('%:p:h') . '/' . expand('<cfile>'), ':p'))<CR><CR>
+nnoremap <space>e :execute 'edit ' . fnameescape(fnamemodify(expand('%:p:h') . '/' . expand('<cfile>'), ':p'))<CR>
+
 
 nnoremap <Space>h <C-w>h
 nnoremap <Space>j <C-w>j
 nnoremap <Space>k <C-w>k
 nnoremap <Space>l <C-w>l
-
-" ---------- parentheses matching ----------
-inoremap ( ()<Left>
-inoremap () ()
-inoremap { {}<Left>
-inoremap {} {}
-inoremap {<CR> {<CR>}<Esc>ko
-inoremap ` ``<Left>
-inoremap `` ``
 
 " ---------- Custom behaviours ----------
 " fzf support
@@ -258,24 +249,24 @@ au FileType markdown syntax match mkdCheckedItem /\s*- \[X\].*/
 au FileType markdown hi mkdCheckedItem cterm=strikethrough gui=strikethrough ctermfg=darkgray guifg=darkgray
 
 " Make the current word bold, italic, or strikethrough
-nnoremap mb :call MarkdownWrapWord('**')<CR>
-xnoremap mb :<C-u>call MarkdownWrap('**')<CR>
-nnoremap mgb :call MarkdownWrapLine('**')<CR>
+nnoremap <Space>mb :call MarkdownWrapWord('**')<CR>
+xnoremap <Space>mb :<C-u>call MarkdownWrap('**')<CR>
+nnoremap <Space>mgb :call MarkdownWrapLine('**')<CR>
 
-nnoremap mi :call MarkdownWrapWord('*')<CR>
-xnoremap mi :<C-u>call MarkdownWrap('*')<CR>
-nnoremap mgi :call MarkdownWrapLine('*')<CR>
+nnoremap <Space>mi :call MarkdownWrapWord('*')<CR>
+xnoremap <Space>mi :<C-u>call MarkdownWrap('*')<CR>
+nnoremap <Space>mgi :call MarkdownWrapLine('*')<CR>
 
-nnoremap ms :call MarkdownWrapWord('~~')<CR>
-xnoremap ms :<C-u>call MarkdownWrap('~~')<CR>
-nnoremap mgs :call MarkdownWrapLine('~~')<CR>
+nnoremap <Space>ms :call MarkdownWrapWord('~~')<CR>
+xnoremap <Space>ms :<C-u>call MarkdownWrap('~~')<CR>
+nnoremap <Space>mgs :call MarkdownWrapLine('~~')<CR>
 
 " Toggle a checkbox without requiring selection
-nnoremap mx :call ToggleMarkdownCheckbox()<CR>
+nnoremap <Space>mx :call ToggleMarkdownCheckbox()<CR>
 
 " Change current word into a markdown link
-nnoremap ml ciw[<C-r>"]()<Esc>i
-vnoremap ml c[<C-r>"]()<Esc>i
+nnoremap <Space>ml ciw[<C-r>"]()<Esc>i
+vnoremap <Space>ml c[<C-r>"]()<Esc>i
 
 " Functions for markdown operations
 " Functions to handle wrapping and toggling
@@ -313,33 +304,6 @@ function! ToggleMarkdownCheckbox()
     endif
 endfunction
 
-autocmd FileType markdown inoremap <buffer> <Tab> <C-o>:call IndentMarkdownBullet()<CR>
-function! IndentMarkdownBullet()
-  " Get current line's text
-  let l:line = getline('.')
-  " Check if line starts with a bullet and has no following text
-  if l:line=~ '^\s*[-*+]\s*$'
-    " Add an extra level of indentation (e.g., 2 spaces or a tab stop)
-    execute "normal! >>$"
-  else
-    execute "normal! i\<Tab>"
-  endif
-endfunction
-
-autocmd FileType markdown inoremap <buffer> <S-Tab> <C-o>:call OutdentMarkdownBullet()<CR>
-function! OutdentMarkdownBullet()
-  "Get the current line's text
-  let l:line = getline('.')
-  " Check if the line starts with a bullet and has no following text
-  if l:line =~ '^\s*[-*+]\s*$'
-    " Outdent the line and move the cursor to the end of the line
-    execute "normal! <<$"
-  else
-    "Otherwise, delete a tab character
-    execute "normal! i<BS>"
-  endif
-endfunction
-
 " ---------- Go specific settings ----------
 let g:ale_sign_error = '☠'
 let g:ale_sign_warning = '🙄'
@@ -365,7 +329,7 @@ map gdb :GoDebugBreakpoint<cr>
 
 " ---------- Github Copilot ----------
 " Disable Copilot on startup
-let g:copilot_enabled = v:false
+"let g:copilot_enabled = v:false
 
 " ---------- ctags ----------
 nnoremap ,t :tag <C-R><C-W><CR>
@@ -520,9 +484,6 @@ let g:go_auto_type_info = 0
 let g:ale_sign_error = '☠'
 let g:ale_sign_warning = '🙄'
 let g:ale_linters = {'go': ['gometalinter', 'gofmt','gobuild']}
-
-" Disable Copilot on startup
-let g:copilot_enabled = v:false
 
 let g:fzf_layout = { 'down': '~40%' }
 autocmd VimEnter * if isdirectory(expand('%')) | call fzf#run(fzf#wrap({'source': 'find . -type f', 'sink': 'e'})) | endif
