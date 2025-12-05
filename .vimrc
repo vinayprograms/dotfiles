@@ -114,6 +114,15 @@ set rtp+=/opt/homebrew/opt/fzf
 " [copied from rwxrob] start at last place you were editing
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
+" I don't like the complicated setup of copying/pasting text to clipboard
+" when running vim inside tmux. Instead, use a custom keybinding to copy
+" selection to host clipboard.
+xnoremap gy "+y
+nnoremap gp "+p
+nnoremap gP "+P
+xnoremap gp "+p
+xnoremap gP "+P
+
 "Autosave after 5 seconds of inactivity
 set updatetime=5000
 function! AutoSaveAllBuffers()
@@ -329,7 +338,7 @@ map gdb :GoDebugBreakpoint<cr>
 
 " ---------- Github Copilot ----------
 " Disable Copilot on startup
-"let g:copilot_enabled = v:false
+let g:copilot_enabled = v:false
 
 " ---------- ctags ----------
 nnoremap ,t :tag <C-R><C-W><CR>
