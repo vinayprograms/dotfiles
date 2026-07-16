@@ -190,6 +190,11 @@ let s:blink_timer = timer_start(500, 'BlinkZettelWarning', {'repeat': -1})
 "let g:polyglot_disabled = ['markdown']
 "let g:vim_markdown_edit_url_in = 'tab'
 
+" ----- macOS: use 'open' for gx -----
+let g:netrw_nogx = 1
+let g:netrw_browsex_viewer = "open"
+nnoremap gx :execute 'silent !open ' . shellescape(expand('<cfile>'), 1)<CR>
+
 " ----- Additional settings (copied from rwxrob's dotfiles) -----
 " base default color changes (gruvbox dark friendly)
 hi StatusLine ctermfg=darkgray guifg=darkgray ctermbg=NONE guibg=NONE
