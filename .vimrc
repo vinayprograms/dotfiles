@@ -11,6 +11,7 @@ set showtabline=2
 set textwidth=75
 set colorcolumn=76
 set cursorline
+set notitle " Don't push file name to tmux
 
 set breakindent linebreak breakindentopt=,min:40
 set fo-=t   " don't auto-wrap text using text width
@@ -186,11 +187,8 @@ command! ZetWarn call ToggleZettelWarning()
 " Start timer to blink zettel warning
 let s:blink_timer = timer_start(500, 'BlinkZettelWarning', {'repeat': -1})
 
-
-" If using tmux, set the pane title to the file opened by vim. On exit, reset
-" the name to the shell name.
-autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%:t"))
-autocmd VimLeave * call system("tmux rename-window " . fnamemodify($SHELL, ':t'))
+"let g:polyglot_disabled = ['markdown']
+"let g:vim_markdown_edit_url_in = 'tab'
 
 " ----- Additional settings (copied from rwxrob's dotfiles) -----
 " base default color changes (gruvbox dark friendly)
@@ -252,10 +250,16 @@ au FileType markdown,pandoc hi htmlBold ctermfg=254 cterm=bold
 au FileType markdown,pandoc hi markdownCode ctermfg=darkblue ctermbg=NONE
 au FileType markdown,pandoc set tw=0
 au FileType markdown setlocal shiftwidth=2 softtabstop=2
-autocmd FileType markdown syntax enable
+autocmd FileType markdown syntax enable sync fromstart
 au FileType markdown syntax match mkdCheckedItem /\s*- \[x\].*/
 au FileType markdown syntax match mkdCheckedItem /\s*- \[X\].*/
 au FileType markdown hi mkdCheckedItem cterm=strikethrough gui=strikethrough ctermfg=darkgray guifg=darkgray
+" function! SynGroup()
+"   let l:s = synID(line('.'), col('.'), 1)
+"   echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+" endfunction
+" nnoremap <Space>sg :call SynGroup()<CR>
+let g:vim_markdown_math = 0  " Avoid mathjax specific syntax highlighting
 
 " Make the current word bold, italic, or strikethrough
 nnoremap <Space>mb :call MarkdownWrapWord('**')<CR>
@@ -366,18 +370,29 @@ highlight StatusLineNormal ctermfg=darkgray ctermbg=black guifg=#ffffff guibg=#0
 highlight StatusLineInsert ctermfg=black ctermbg=red guifg=#000000 guibg=#5f8700
 highlight StatusLineVisual ctermfg=black ctermbg=cyan guifg=#000000 guibg=#d7af5f
 highlight StatusLineReplace ctermfg=black ctermbg=yellow guifg=#000000 guibg=#af0000
+" Define subtle CursorLine highlights for each mode
+highlight CursorLineNormal  cterm=none ctermbg=NONE ctermul=gray gui=underline guibg=NONE guisp=#005f87
+highlight CursorLineInsert  cterm=bold,underline ctermbg=NONE ctermul=white gui=underline guibg=NONE guisp=#5f8700
+highlight CursorLineVisual  cterm=none ctermbg=NONE ctermul=cyan gui=underline guibg=NONE guisp=#d7af5f
+highlight CursorLineReplace cterm=bold,undercurl ctermbg=NONE ctermul=white gui=underline guibg=NONE guisp=#af0000
+
+set cursorlineopt=screenline
 
 " Function to update the status line based on mode
 function! UpdateStatusLineColor()
     let l:mode = mode()
     if l:mode == 'n'
         hi! link StatusLine StatusLineNormal
+        hi! link CursorLine CursorLineNormal
     elseif l:mode == 'i'
         hi! link StatusLine StatusLineInsert
+        hi! link CursorLine CursorLineInsert
     elseif l:mode == 'v' || l:mode == 'V' || l:mode == '^V'
         hi! link StatusLine StatusLineVisual
+        hi! link CursorLine CursorLineVisual
     elseif l:mode == 'R'
         hi! link StatusLine StatusLineReplace
+        hi! link CursorLine CursorLineReplace
     endif
 endfunction
 

@@ -13,6 +13,7 @@ echo "Please add 'ZETDIR' and 'PRJDIR' paths to $HOME/.gtdrc"
 
 ln -sf "$HOME/.local/dotfiles/.tmux.conf" "$HOME/.tmux.conf"
 ln -sf "$HOME/.local/dotfiles/.vimrc" "$HOME/.vimrc"
+ln -sf "$HOME/.local/dotfiles/.inputrc" "$HOME/.inputrc"
 
 # Git should ignore ctags files everywhere
 echo "tags" >> ~/.global_ignore
