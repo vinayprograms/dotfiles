@@ -3,13 +3,13 @@ set autowrite
 set showmode
 set expandtab
 set tabstop=2 softtabstop=2 shiftwidth=2 smarttab
-"set number ruler relativenumber
+set number ruler relativenumber
 set autoindent smartindent
 set showcmd " show partially entered commands
 set backspace=indent,eol,start
 set showtabline=2
 set textwidth=75
-set colorcolumn=76
+"set colorcolumn=76
 set cursorline
 set notitle " Don't push file name to tmux
 
@@ -197,45 +197,45 @@ nnoremap gx :execute 'silent !open ' . shellescape(expand('<cfile>'), 1)<CR>
 
 " ----- Additional settings (copied from rwxrob's dotfiles) -----
 " base default color changes (gruvbox dark friendly)
-hi StatusLine ctermfg=darkgray guifg=darkgray ctermbg=NONE guibg=NONE
-hi StatusLineNC ctermfg=darkgray guifg=darkgray ctermbg=NONE guibg=NONE
+hi StatusLine ctermfg=darkgray ctermbg=NONE guifg=#928374 guibg=NONE
+hi StatusLineNC ctermfg=darkgray ctermbg=NONE guifg=#928374 guibg=NONE
 hi Normal ctermbg=NONE guibg=NONE
-hi Special ctermfg=cyan guifg=cyan
-hi LineNr ctermfg=gray guifg=gray ctermbg=NONE guibg=NONE
-hi SpecialKey ctermfg=darkgray ctermbg=NONE
-hi ModeMsg ctermfg=darkgray cterm=NONE ctermbg=NONE
-hi MoreMsg ctermfg=black ctermbg=NONE
-hi NonText ctermfg=black ctermbg=NONE
-hi vimGlobal ctermfg=black ctermbg=NONE
-hi ColorColumn ctermbg=236 guibg=darkgray
-hi ErrorMsg ctermbg=234 ctermfg=darkred cterm=NONE
-hi Error ctermbg=234 ctermfg=darkred cterm=NONE
+hi Special ctermfg=cyan guifg=#8ec07c
+hi LineNr ctermfg=gray ctermbg=NONE guifg=#a89984 guibg=NONE
+hi SpecialKey ctermfg=darkgray ctermbg=NONE guifg=#928374 guibg=NONE
+hi ModeMsg ctermfg=darkgray cterm=NONE ctermbg=NONE guifg=#928374 gui=NONE guibg=NONE
+hi MoreMsg ctermfg=black ctermbg=NONE guifg=#282828 guibg=NONE
+hi NonText ctermfg=black ctermbg=NONE guifg=#282828 guibg=NONE
+hi vimGlobal ctermfg=black ctermbg=NONE guifg=#282828 guibg=NONE
+hi ColorColumn ctermbg=236 guibg=#303030
+hi ErrorMsg ctermbg=234 ctermfg=darkred cterm=NONE guibg=#1c1c1c guifg=#cc241d gui=NONE
+hi Error ctermbg=234 ctermfg=darkred cterm=NONE guibg=#1c1c1c guifg=#cc241d gui=NONE
 " hi SpellBad ctermbg=234 ctermfg=darkred cterm=NONE
 " hi SpellRare ctermbg=234 ctermfg=darkred cterm=NONE
-hi Search ctermbg=236 ctermfg=darkred
-hi vimTodo ctermbg=236 ctermfg=darkred
-hi Todo ctermbg=236 ctermfg=darkred
-hi IncSearch ctermbg=236 cterm=NONE ctermfg=darkred
-hi MatchParen ctermbg=236 ctermfg=darkred
+hi Search ctermbg=236 ctermfg=darkred guibg=#303030 guifg=#cc241d
+hi vimTodo ctermbg=236 ctermfg=darkred guibg=#303030 guifg=#cc241d
+hi Todo ctermbg=236 ctermfg=darkred guibg=#303030 guifg=#cc241d
+hi IncSearch ctermbg=236 cterm=NONE ctermfg=darkred guibg=#303030 gui=NONE guifg=#cc241d
+hi MatchParen ctermbg=236 ctermfg=darkred guibg=#303030 guifg=#cc241d
 
 " color overrides
-au FileType * hi Normal ctermbg=NONE
-au FileType * hi Special ctermfg=cyan
-au FileType * hi goComment ctermfg=darkgray ctermbg=NONE
-au FileType * hi ErrorMsg ctermbg=234 ctermfg=darkred cterm=NONE
-au FileType * hi Error ctermbg=234 ctermfg=darkred cterm=NONE
+au FileType * hi Normal ctermbg=NONE guibg=NONE
+au FileType * hi Special ctermfg=cyan guifg=#8ec07c
+au FileType * hi goComment ctermfg=darkgray ctermbg=NONE guifg=#928374 guibg=NONE
+au FileType * hi ErrorMsg ctermbg=234 ctermfg=darkred cterm=NONE guibg=#1c1c1c guifg=#cc241d gui=NONE
+au FileType * hi Error ctermbg=234 ctermfg=darkred cterm=NONE guibg=#1c1c1c guifg=#cc241d gui=NONE
 let &t_Cs = "\e[4:3m"
 let &t_Ce = "\e[4:0m"
 au FileType * hi SpellBad ctermfg=NONE ctermbg=NONE cterm=undercurl gui=undercurl guisp=red
 au FileType * hi SpellCap ctermfg=NONE ctermbg=NONE cterm=undercurl gui=undercurl guisp=yellow
 au FileType * hi SpellRare ctermfg=NONE ctermbg=NONE cterm=undercurl gui=undercurl guisp=blue
 au FileType * hi SpellLocal ctermfg=NONE ctermbg=NONE cterm=undercurl gui=undercurl guisp=orange
-au FileType * hi Search ctermbg=236 ctermfg=darkred
-au FileType * hi vimTodo ctermbg=236 ctermfg=darkred
-au FileType * hi Todo ctermbg=236 ctermfg=darkred
-au FileType * hi IncSearch ctermbg=236 cterm=NONE ctermfg=darkred
-au FileType * hi MatchParen ctermbg=236 ctermfg=darkred
-au FileType yaml hi yamlBlockMappingKey ctermfg=NONE
+au FileType * hi Search ctermbg=236 ctermfg=darkred guibg=#303030 guifg=#cc241d
+au FileType * hi vimTodo ctermbg=236 ctermfg=darkred guibg=#303030 guifg=#cc241d
+au FileType * hi Todo ctermbg=236 ctermfg=darkred guibg=#303030 guifg=#cc241d
+au FileType * hi IncSearch ctermbg=236 cterm=NONE ctermfg=darkred guibg=#303030 gui=NONE guifg=#cc241d
+au FileType * hi MatchParen ctermbg=236 ctermfg=darkred guibg=#303030 guifg=#cc241d
+au FileType yaml hi yamlBlockMappingKey ctermfg=NONE guifg=NONE
 au FileType yaml set sw=2
 au FileType bash set sw=2
 au FileType c set sw=8
@@ -247,18 +247,18 @@ let g:vim_markdown_conceal_code_blocks=0
 let g:vim_markdown_frontmatter=1
 let g:vim_markdown_edit_url_in='tab'
 let g:vim_markdown_follow_anchor=1
-highlight mkdStrike ctermfg=lightgray guifg=lightgray cterm=strikethrough gui=strikethrough
+highlight mkdStrike ctermfg=lightgray cterm=strikethrough guifg=#a89984 gui=strikethrough
 au BufNewFile,Bufread *.md set filetype=markdown " Treat all .md files as Markdown
-au FileType markdown,pandoc hi Title ctermfg=yellow ctermbg=NONE cterm=bold
-au FileType markdown,pandoc hi Operator ctermfg=yellow ctermbg=NONE cterm=bold
-au FileType markdown,pandoc hi htmlBold ctermfg=254 cterm=bold
-au FileType markdown,pandoc hi markdownCode ctermfg=darkblue ctermbg=NONE
+au FileType markdown,pandoc hi Title ctermfg=yellow ctermbg=NONE cterm=bold guifg=#fabd2f guibg=NONE gui=bold
+au FileType markdown,pandoc hi Operator ctermfg=yellow ctermbg=NONE cterm=bold guifg=#fabd2f guibg=NONE gui=bold
+au FileType markdown,pandoc hi htmlBold ctermfg=254 cterm=bold guifg=#e4e4e4 gui=bold
+au FileType markdown,pandoc hi markdownCode ctermfg=darkblue ctermbg=NONE guifg=#458588 guibg=NONE
 au FileType markdown,pandoc set tw=0
 au FileType markdown setlocal shiftwidth=2 softtabstop=2
 autocmd FileType markdown syntax enable sync fromstart
 au FileType markdown syntax match mkdCheckedItem /\s*- \[x\].*/
 au FileType markdown syntax match mkdCheckedItem /\s*- \[X\].*/
-au FileType markdown hi mkdCheckedItem cterm=strikethrough gui=strikethrough ctermfg=darkgray guifg=darkgray
+au FileType markdown hi mkdCheckedItem cterm=strikethrough gui=strikethrough ctermfg=darkgray guifg=#928374
 " function! SynGroup()
 "   let l:s = synID(line('.'), col('.'), 1)
 "   echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
@@ -371,15 +371,15 @@ nnoremap <tab> za
 
 " ---------- Better mode visuals ----------
 " Define highlight groups for different modes
-highlight StatusLineNormal ctermfg=darkgray ctermbg=black guifg=#ffffff guibg=#005f87
-highlight StatusLineInsert ctermfg=black ctermbg=red guifg=#000000 guibg=#5f8700
-highlight StatusLineVisual ctermfg=black ctermbg=cyan guifg=#000000 guibg=#d7af5f
-highlight StatusLineReplace ctermfg=black ctermbg=yellow guifg=#000000 guibg=#af0000
+highlight StatusLineNormal ctermfg=darkgray ctermbg=black guifg=#928374 guibg=#282828
+highlight StatusLineInsert ctermfg=black ctermbg=red guifg=#282828 guibg=#fb4934
+highlight StatusLineVisual ctermfg=black ctermbg=cyan guifg=#282828 guibg=#8ec07c
+highlight StatusLineReplace ctermfg=black ctermbg=yellow guifg=#282828 guibg=#fabd2f
 " Define subtle CursorLine highlights for each mode
-highlight CursorLineNormal  cterm=none ctermbg=NONE ctermul=gray gui=underline guibg=NONE guisp=#005f87
-highlight CursorLineInsert  cterm=bold,underline ctermbg=NONE ctermul=white gui=underline guibg=NONE guisp=#5f8700
-highlight CursorLineVisual  cterm=none ctermbg=NONE ctermul=cyan gui=underline guibg=NONE guisp=#d7af5f
-highlight CursorLineReplace cterm=bold,undercurl ctermbg=NONE ctermul=white gui=underline guibg=NONE guisp=#af0000
+highlight CursorLineNormal  cterm=none ctermbg=NONE ctermul=gray gui=underline guibg=NONE guisp=#a89984
+highlight CursorLineInsert  cterm=bold,underline ctermbg=NONE ctermul=white gui=underline guibg=NONE guisp=#ebdbb2
+highlight CursorLineVisual  cterm=none ctermbg=NONE ctermul=cyan gui=underline guibg=NONE guisp=#8ec07c
+highlight CursorLineReplace cterm=bold,undercurl ctermbg=NONE ctermul=white gui=underline guibg=NONE guisp=#ebdbb2
 
 set cursorlineopt=screenline
 
@@ -414,6 +414,9 @@ autocmd ModeChanged * call UpdateStatusLineColor()
 autocmd VimEnter * call UpdateStatusLineColor()
 
 " Change cursor shape for better visuals
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set termguicolors
 if has("termguicolors")
   let &t_SI = "\e[5 q" " Blinking bar for Insert mode
   let &t_SR = "\e[4 q" " Blinking underline for Replace mode
