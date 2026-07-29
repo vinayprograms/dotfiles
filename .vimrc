@@ -35,6 +35,12 @@ set wildmenu
 " turn on default spell checking
 set spell spelllang=en_us
 
+" ---------- reset cursor when entering vim ----------
+" Set block cursor + default color on enter
+let &t_ti .= "\e[2 q\e]112\007"
+" Restore your bash cursor on exit
+let &t_te .= "\e[6 q"
+
 " ---------- whitespace handling ----------
 hi ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace '\s\+$'
@@ -201,6 +207,7 @@ hi StatusLine ctermfg=darkgray ctermbg=NONE guifg=#928374 guibg=NONE
 hi StatusLineNC ctermfg=darkgray ctermbg=NONE guifg=#928374 guibg=NONE
 hi Normal ctermbg=NONE guibg=NONE
 hi Special ctermfg=cyan guifg=#8ec07c
+hi Comment ctermfg=cyan guifg=#578e57
 hi LineNr ctermfg=gray ctermbg=NONE guifg=#a89984 guibg=NONE
 hi SpecialKey ctermfg=darkgray ctermbg=NONE guifg=#928374 guibg=NONE
 hi ModeMsg ctermfg=darkgray cterm=NONE ctermbg=NONE guifg=#928374 gui=NONE guibg=NONE
@@ -221,6 +228,7 @@ hi MatchParen ctermbg=236 ctermfg=darkred guibg=#303030 guifg=#cc241d
 " color overrides
 au FileType * hi Normal ctermbg=NONE guibg=NONE
 au FileType * hi Special ctermfg=cyan guifg=#8ec07c
+au FileType * hi Comment ctermfg=cyan guifg=#578e57
 au FileType * hi goComment ctermfg=darkgray ctermbg=NONE guifg=#928374 guibg=NONE
 au FileType * hi ErrorMsg ctermbg=234 ctermfg=darkred cterm=NONE guibg=#1c1c1c guifg=#cc241d gui=NONE
 au FileType * hi Error ctermbg=234 ctermfg=darkred cterm=NONE guibg=#1c1c1c guifg=#cc241d gui=NONE
